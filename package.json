@@ -1,0 +1,41 @@
+{
+  "name": "iconify-picker",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Zero-dependency icon picker with built-in UI modes and native events",
+  "files": [
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "dev:demo": "vite --mode demo",
+    "build": "vite build && tsc",
+    "build:demo": "vite build --mode demo",
+    "preview": "vite preview",
+    "preview:demo": "vite preview --mode demo",
+    "prepare": "npm run build",
+    "deploy": "npm run build:demo && git add docs && git commit -m 'Update demo' && git push"
+  },
+  "keywords": [
+    "iconify",
+    "icons",
+    "web-component",
+    "custom-element",
+    "icon-picker",
+    "icon-browser"
+  ],
+  "author": "Metaory",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metaory/iconify-picker.git"
+  },
+  "homepage": "https://github.com/metaory/iconify-picker#readme",
+  "bugs": {
+    "url": "https://github.com/metaory/iconify-picker/issues"
+  },
+  "devDependencies": {
+    "vite": "6.*"
+  }
+}
