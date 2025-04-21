@@ -19,6 +19,13 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: Prepare docs
+        run: |
+          # Copy source file to docs
+          cp src/iconify-picker.js docs/
+          # Verify files
+          ls -la docs/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
