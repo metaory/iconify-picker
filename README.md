@@ -1,9 +1,22 @@
-# 🚧 `<iconify-picker>`
+# Iconify Picker Web Component
 
-Zero-dependency icon picker with built-in UI modes and native events
+A zero-dependency, framework-agnostic icon picker web component powered by Iconify.
 
-A modern, zero-dependency icon picker built as a custom element. Drop in anywhere — no framework required. Toggleable display modes (inline, button, manual), custom events, and fully themeable with CSS vars.
+## Features
 
+- 🚀 Zero dependencies
+- 🎨 Fully themeable
+- 🔌 Framework agnostic
+- 🎯 Multiple modes (inline, button, manual)
+- 📦 Lightweight and fast
+
+## Documentation
+
+Visit our [documentation site](https://yourusername.github.io/iconify-picker/) for detailed usage instructions and examples.
+
+Here’s a **README template** for an **Autonomous Mode Component**—tailored to your standards. It emphasizes declarative usage, minimalism, browser-native behavior, and styling flexibility.
+
+# `<iconify-picker>`
 
 **Autonomous Mode Web Component** for selecting icons from any [Iconify](https://iconify.design/) collection.
 
@@ -36,30 +49,19 @@ npm install iconify-picker
 ### Always Visible Picker
 
 ```html
-<iconify-picker collection="mdi" />
+<iconify-picker collection="mdi"></iconify-picker>
 ```
 
 ### Button-Toggled Picker
 
 ```html
-<iconify-picker
-  mode="button"
-  button-label="Choose Icon"
-  collection="mdi"
-  theme="dark"
-  filter="*:*:*"
-/>
+<iconify-picker mode="button" button-label="Choose Icon" collection="mdi"></iconify-picker>
 ```
 
 ### Programmatic Display
 
 ```html
-<iconify-picker 
-  id="picker"
-  mode="manual"
-  hidden
-  collection="mdi"
-/>
+<iconify-picker id="picker" mode="manual" hidden collection="mdi"></iconify-picker>
 
 <script>
   picker.show(); // Open picker manually
@@ -120,7 +122,7 @@ Customize with CSS custom properties:
     --picker-accent: hotpink;
     --picker-radius: 8px;
   "
-/>
+></iconify-picker>
 ```
 
 ### Exposed Parts (for `::part()`)
@@ -145,6 +147,20 @@ This component follows the **Autonomous Mode** pattern:
 
 ---
 
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+
+# Build for production
+npm run build
+```
+
 ## License
 
-MIT
+[MIT](LICENSE)
