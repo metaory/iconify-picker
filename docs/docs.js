@@ -1,4 +1,3 @@
-import './docs.css'
 import './iconify-picker.js'
 
 import gradientGL from 'https://esm.sh/gradient-gl'
