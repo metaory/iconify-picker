@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Permissions-Policy" content="interest-cohort=(), browsing-topics=()">
+  <link rel="icon" href="public/favicon.svg">
   <base href="/iconify-picker/">
   <title>Iconify Picker - Zero-dependency icon picker</title>
-  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <main>
-    <h1>Iconify Picker</h1>
-    <p class="description">
-      A modern, zero-dependency icon picker built as a custom element. 
-      Drop in anywhere — no framework required.
-    </p>
+    <doc-header></doc-header>
+    <doc-nav></doc-nav>
 
     <div class="demo">
       <iconify-picker collection="mdi"></iconify-picker>
+      <doc-event-log></doc-event-log>
     </div>
 
     <div class="features">
@@ -39,21 +38,6 @@
       </div>
     </div>
 
-    <div class="nav">
-      <a href="inline.html" class="nav-item">
-        <div class="nav-title">Inline Mode</div>
-        <div class="nav-desc">Always visible picker for forms and settings</div>
-      </a>
-      <a href="button.html" class="nav-item">
-        <div class="nav-title">Button Mode</div>
-        <div class="nav-desc">Toggle picker with a button click</div>
-      </a>
-      <a href="manual.html" class="nav-item">
-        <div class="nav-title">Manual Mode</div>
-        <div class="nav-desc">Programmatic control for custom UIs</div>
-      </a>
-    </div>
-
     <div class="usage">
       <div class="usage-item">
         <div class="usage-title">Install via CDN</div>
@@ -69,10 +53,7 @@
     </div>
   </main>
 
-  <script type="module">
-    import gradientGL from 'https://unpkg.com/gradient-gl'
-    gradientGL('a2.aea9')
-  </script>
-  <script type="module" src="iconify-picker.js"></script>
+  <script type="module" src="docs.js"></script>
 </body>
-</html> 
+
+</html>

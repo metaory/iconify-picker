@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/iconify-picker/">
   <title>Iconify Picker - Manual Mode</title>
-  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <doc-base>
-    <h1>Manual Mode</h1>
+  <main>
+    <doc-header></doc-header>
+    <doc-nav></doc-nav>
+    <h2>Manual Mode</h2>
     <p>Programmatic control for custom UIs.</p>
 
-    <doc-nav></doc-nav>
-
-    <h2>Usage</h2>
+    <h3>Usage</h3>
     <pre><code>&lt;iconify-picker id="picker" mode="manual" hidden collection="mdi"&gt;&lt;/iconify-picker&gt;
 
 &lt;script&gt;
@@ -21,18 +21,16 @@
   picker.show(); // Open picker manually
 &lt;/script&gt;</code></pre>
 
-    <doc-demo>
-      <div>
-        <div class="controls">
-          <button onclick="picker.show()">Show</button>
-          <button onclick="picker.hide()">Hide</button>
-          <button onclick="picker.toggle()">Toggle</button>
-          <button onclick="picker.reset()">Reset</button>
-        </div>
-        <iconify-picker id="picker" mode="manual" hidden collection="mdi" page-size="48" theme="auto"></iconify-picker>
+    <div class="demo">
+      <div class="controls">
+        <button onclick="picker.show()">Show</button>
+        <button onclick="picker.hide()">Hide</button>
+        <button onclick="picker.toggle()">Toggle</button>
+        <button onclick="picker.reset()">Reset</button>
       </div>
+      <iconify-picker id="picker" mode="manual" hidden collection="mdi" page-size="48" theme="auto"></iconify-picker>
       <doc-event-log></doc-event-log>
-    </doc-demo>
+    </div>
 
     <h2>Methods</h2>
     <ul>
@@ -57,8 +55,8 @@
       <li><code>icon-selected</code> - Fired when an icon is selected</li>
       <li><code>change</code> - Fired when the selected icon changes</li>
     </ul>
-  </doc-base>
+  </main>
 
-  <script type="module" src="/docs.js"></script>
+  <script type="module" src="docs.js"></script>
 </body>
 </html> 

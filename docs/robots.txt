@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://metaory.github.io/iconify-picker/sitemap.xml 

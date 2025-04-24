@@ -2,14 +2,20 @@
 import { resolve } from 'node:path'
 
 export default {
-  base: process.env.NODE_ENV === 'production' ? '/iconify-picker/' : '/',
-  build: {
-    outDir: 'docs',
-    emptyOutDir: true,
-    copyPublicDir: true
+  root: 'docs',
+  base: '/iconify-picker/',
+  appType: 'mpa', // Enable multi-page application mode
+  resolve: {
+    alias: {
+      './iconify-picker.js': resolve(__dirname, 'lib/iconify-picker.js')
+    }
   },
   server: {
-    open: '/docs/'
-  },
-  publicDir: 'docs'
+    fs: {
+      allow: [
+        resolve(__dirname, 'lib'),
+        resolve(__dirname, 'docs'),
+      ]
+    }
+  }
 }

@@ -1,26 +1,21 @@
 {
   "name": "iconify-picker",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "type": "module",
   "description": "Zero-dependency icon picker with built-in UI modes and native events",
-  "main": "./src/iconify-picker.js",
-  "module": "./src/iconify-picker.js",
-  "unpkg": "./src/iconify-picker.js",
   "files": [
-    "src/iconify-picker.js",
+    "lib/iconify-picker.js",
     "README.md",
     "LICENSE"
   ],
+  "main": "lib/iconify-picker.js",
   "exports": {
-    ".": "./src/iconify-picker.js"
+    ".": "./lib/iconify-picker.js"
   },
   "scripts": {
-    "dev": "vite",
-    "preview": "vite preview",
-    "build": "vite build",
-    "build:demo": "vite build"
+    "dev": "npx vite docs --config vite.config.js"
   },
-  "keywords": [
+  "keywords":[
     "iconify",
     "icons",
     "web-component",
@@ -37,8 +32,5 @@
   "homepage": "https://github.com/metaory/iconify-picker#readme",
   "bugs": {
     "url": "https://github.com/metaory/iconify-picker/issues"
-  },
-  "devDependencies": {
-    "vite": "6.*"
   }
 }

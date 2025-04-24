@@ -1,144 +1,178 @@
-import gradientGL from 'https://unpkg.com/gradient-gl'
-// import './style.css'
-gradientGL('a2.aea9')
+import './docs.css'
+import './iconify-picker.js'
 
-// Load the iconify-picker script
-const pickerScript = document.createElement('script');
-pickerScript.type = 'module';
-pickerScript.src = '../src/iconify-picker.js';
-document.body.appendChild(pickerScript);
+import gradientGL from 'https://esm.sh/gradient-gl'
 
-// Base layout component
-class DocBase extends HTMLElement {
+// Create persistent canvas
+const canvas = document.createElement('canvas')
+canvas.id = 'gl-bg'
+document.body.prepend(canvas)
+
+// Initialize gradient once
+gradientGL('a2.b18e', '#gl-bg')
+
+const $ = (sel, ctx = document) => ctx.querySelector(sel)
+const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)]
+
+class DocHeader extends HTMLElement {
   constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `
-      <main>
-        <slot></slot>
-      </main>
+    super()
+    this.attachShadow({ mode: 'open' })
+    this.shadowRoot.innerHTML = /*html*/ `
       <style>
-        main {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 2rem;
+        :host { 
+          display: block; 
+          width: 100%;
+        }
+        header { 
+          display: grid;
+          padding: var(--space-sm);
+          grid-auto-flow: column;
+          place-content: space-between;
+        }
+        img { 
+          width: 4rem; 
+          height: 4rem; 
+          margin-right: var(--space-sm);
+        }
+        h1 { 
+          font-family: barcode, monospace; 
+          font-weight: bold;
+          font-size: 4rem;
+          margin: 0;
         }
       </style>
-    `;
+      <header>
+        <img src="public/favicon.svg" alt="Iconify Picker Logo" />
+        <h1>Iconify Picker</h1>
+        <img src="public/github.svg" alt="GitHub Logo" />
+      </header>
+    `
   }
 }
 
-// Navigation component
 class DocNav extends HTMLElement {
   constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `
-      <div class="nav">
-        <a href="/">Home</a>
-        <a href="/inline.html">Inline</a>
-        <a href="/button.html">Button</a>
-        <a href="/manual.html">Manual</a>
-      </div>
-      <style>
-        .nav {
-          display: flex;
-          gap: 1rem;
-          margin: 2rem 0;
+    super()
+    this.attachShadow({ mode: 'open' })
+    const links = [
+      'index.html|Home',
+      'inline.html|Inline',
+      'button.html|Button',
+      'manual.html|Manual',
+    ]
+      .map((l) => {
+        const [href, text] = l.split('|')
+        return `<a href="${href}">${text}</a>`
+      })
+      .join('')
+
+    this.shadowRoot.innerHTML = /*html*/ `
+    <style>
+      nav {
+        display: grid;
+        gap: var(--space-md);
+        padding: var(--space-sm);
+        grid-auto-flow: column;
+        position: relative;
+        place-content: space-around;
+        isolation: isolate;
+      }
+      nav::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, var(--b6) 30%, transparent 100%);
+        border-radius: 1rem;
+        z-index: -1;
+        filter: blur(8px);
+      }
+      a {
+        text-decoration: underline;
+        text-decoration-thickness: 0.1em;
+        text-decoration-color: var(--l1);
+        text-underline-offset: 0.4em;
+        text-decoration-style: solid;
+        font-family: fredoka, monospace;
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: var(--l1);
+        transition: var(--transition);
+      }
+    </style>
+    <nav>${links}</nav>
+    `
+
+    if (!document.startViewTransition) return
+
+    for (const a of $$('a', this.shadowRoot)) {
+      a.addEventListener('click', (e) => {
+        e.preventDefault()
+        this.navigateTo(a.href)
+      })
+    }
+  }
+
+  connectedCallback() {
+    window.addEventListener('popstate', () => this.tagHeadings())
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('popstate', () => this.tagHeadings())
+  }
+
+  tagHeadings() {
+    let i = 0
+    for (const h of $$('h1, h2')) {
+      h.dataset.transition = `heading-${i++}`
+    }
+  }
+
+  async navigateTo(href) {
+    try {
+      await document.startViewTransition(async () => {
+        const doc = new DOMParser().parseFromString(await (await fetch(href)).text(), 'text/html')
+        document.title = doc.title
+        const main = doc.body.querySelector('main')
+        if (main) {
+          document.querySelector('main').innerHTML = main.innerHTML
         }
-        .nav a {
-          color: var(--fg);
-          text-decoration: none;
-          padding: 0.5rem 1rem;
-          border-radius: var(--radius);
-          background: #ffffff22;
-        }
-        .nav a:hover {
-          background: #ffffff44;
-        }
-      </style>
-    `;
+        history.pushState({}, '', href)
+        this.tagHeadings()
+      }).finished
+    } catch {
+      location.href = href
+    }
   }
 }
 
-// Demo container component
-class DocDemo extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `
-      <div class="demo">
-        <h2>Demo</h2>
-        <div class="demo-container">
-          <slot></slot>
-        </div>
-      </div>
-      <style>
-        .demo {
-          margin: 2rem 0;
-          padding: 2rem;
-          background: #ffffff22;
-          border-radius: var(--radius);
-        }
-        .demo-container {
-          display: grid;
-          gap: 2rem;
-          grid-template-columns: 1fr 1fr;
-        }
-        @media (max-width: 768px) {
-          .demo-container {
-            grid-template-columns: 1fr;
-          }
-        }
-      </style>
-    `;
-  }
-}
-
-// Event log component
+// Event Log Component
 class DocEventLog extends HTMLElement {
   constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `
-      <pre id="event-log"></pre>
-      <style>
-        pre {
-          background: #ffffff22;
-          padding: 1rem;
-          border-radius: var(--radius);
-          overflow-x: auto;
-          max-height: 400px;
-          overflow-y: auto;
-        }
-      </style>
-    `;
+    super()
+    this.attachShadow({ mode: 'open' })
+    this.shadowRoot.innerHTML = '<pre></pre>'
+  }
+
+  connectedCallback() {
+    const picker = this.previousElementSibling
+    if (picker?.tagName !== 'ICONIFY-PICKER') return
+
+    for (const evt of ['icon-selected', 'change']) {
+      picker.addEventListener(evt, (e) => {
+        this.log(`${evt}: ${e.detail.iconName}`)
+      })
+    }
+  }
+
+  log(msg) {
+    const pre = $('pre', this.shadowRoot)
+    pre.textContent = `${pre.textContent}${msg}\n`
+    pre.scrollTop = pre.scrollHeight
   }
 }
 
 // Register components
-customElements.define('doc-base', DocBase);
-customElements.define('doc-nav', DocNav);
-customElements.define('doc-demo', DocDemo);
-customElements.define('doc-event-log', DocEventLog);
-
-// Setup event logging for demos
-document.addEventListener('DOMContentLoaded', () => {
-  const eventLogs = document.querySelectorAll('doc-event-log');
-  if (!eventLogs.length) return;
-
-  const picker = document.querySelector('iconify-picker');
-  if (!picker) return;
-
-  function logEvent(event) {
-    for (const eventLog of eventLogs) {
-      const pre = document.createElement('pre');
-      pre.textContent = `${event.type}: ${JSON.stringify(event.detail, null, 2)}`;
-      eventLog.shadowRoot.querySelector('#event-log').appendChild(pre);
-      eventLog.shadowRoot.querySelector('#event-log').scrollTop = eventLog.shadowRoot.querySelector('#event-log').scrollHeight;
-    }
-  }
-
-  picker.addEventListener('icon-selected', logEvent);
-  picker.addEventListener('change', logEvent);
-}); 
+customElements.define('doc-header', DocHeader)
+customElements.define('doc-nav', DocNav)
+customElements.define('doc-event-log', DocEventLog)
