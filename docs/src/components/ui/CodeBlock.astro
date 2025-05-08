@@ -1,0 +1,162 @@
+---
+import { Code } from 'astro:components';
+
+interface Props {
+  code: string;
+  lang: string;
+  theme?: string;
+}
+
+const { code, lang, theme } = Astro.props;
+---
+
+<div class="code-block">
+  <div class="code-wrapper">
+    <button class="copy-btn" title="Copy to clipboard" aria-label="Copy code to clipboard">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      <span class="sr-only">Copy to clipboard</span>
+    </button>
+    <Code code={code} lang={lang} theme={theme} />
+  </div>
+</div>
+
+<style>
+.code-block {
+  max-width: var(--w0);
+  margin: var(--s0) 0;
+  position: relative;
+}
+
+.code-wrapper {
+  position: relative;
+}
+
+.copy-btn {
+  position: absolute;
+  top: var(--s1);
+  right: var(--s1);
+  background: var(--bg0);
+  border: 1px solid var(--bdr);
+  color: var(--tx0);
+  border-radius: var(--r1);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s, background-color 0.2s, transform 0.1s;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.code-wrapper:hover .copy-btn {
+  opacity: 0.8;
+}
+
+.copy-btn:hover {
+  opacity: 1;
+}
+
+.copy-btn:hover, .copy-btn:focus {
+  background: var(--bg1);
+  outline: 2px solid var(--pri);
+  outline-offset: 2px;
+}
+
+.copy-btn:active {
+  transform: translateY(1px);
+}
+
+.copy-btn.copied {
+  background: var(--pri);
+  color: var(--wht);
+  opacity: 1;
+}
+
+.code-block :global(pre) {
+  border-radius: var(--r0);
+  border: 1px solid var(--bdr);
+  padding: var(--s0);
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.code-block :global(.astro-code) {
+  padding: 0;
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const copyButtons = document.querySelectorAll('.copy-btn');
+  
+  copyButtons.forEach(button => {
+    button.addEventListener('click', async () => {
+      const codeBlock = button.closest('.code-wrapper').querySelector('pre');
+      const code = codeBlock.textContent.trim();
+      
+      try {
+        await navigator.clipboard.writeText(code);
+        
+        // Visual feedback
+        button.classList.add('copied');
+        
+        // Change the icon to a checkmark
+        button.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span class="sr-only">Copied!</span>
+        `;
+        
+        // Reset after 2 seconds
+        setTimeout(() => {
+          button.classList.remove('copied');
+          button.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span class="sr-only">Copy to clipboard</span>
+          `;
+        }, 2000);
+      } catch (err) {
+        console.error('Could not copy text: ', err);
+        
+        // Fallback for browsers that don't support clipboard API
+        const textarea = document.createElement('textarea');
+        textarea.value = code;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        
+        // Visual feedback for fallback
+        button.classList.add('copied');
+        setTimeout(() => button.classList.remove('copied'), 2000);
+      }
+    });
+  });
+});
+</script> 

@@ -1,0 +1,102 @@
+---
+// Sidebar.astro - Navigation sidebar component
+const navSections = [
+  {
+    title: "Setup",
+    links: [
+      { href: "#introduction", text: "Introduction" },
+      { href: "#features", text: "Features" },
+      { href: "#installation", text: "Installation" }
+    ]
+  },
+  {
+    title: "Usage",
+    links: [
+      { href: "#usage", text: "Demos" },
+      { href: "#inline-picker", text: "Inline Mode" },
+      { href: "#button-picker", text: "Button Mode" },
+      { href: "#manual-picker", text: "Manual Mode" }
+    ]
+  },
+  {
+    title: "Index",
+    links: [
+      { href: "#api", text: "API Reference" },
+      { href: "#events", text: "Events" },
+      { href: "#customization", text: "Customization" }
+    ]
+  }
+];
+---
+
+<nav class="sidebar">
+  {navSections.map(section => (
+    <div class="sidebar-section">
+      <h3>{section.title}</h3>
+      <ul>
+        {section.links.map(link => (
+          <li><a href={link.href}>{link.text}</a></li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</nav>
+
+<style>
+.sidebar {
+  position: fixed;
+  padding: var(--s3) var(--s0);
+  grid-column: 1;
+  top: var(--h1);
+  left: 0;
+  width: var(--w-sb);
+  height: calc(100vh - var(--h1));
+  z-index: 5;
+  overflow-y: auto;
+  display: var(--d-sb);
+}
+
+.sidebar-section {
+  margin-bottom: var(--s2);
+}
+
+.sidebar-section h3 {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--s2);
+  color: var(--pri);
+  padding-bottom: var(--s1);
+  border-bottom: 1px solid var(--bdr);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--s1);
+}
+
+.sidebar a {
+  display: block;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r1);
+  color: var(--tx0);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar a:hover {
+  background: var(--pri);
+  color: var(--wht);
+}
+</style> 

@@ -17,7 +17,9 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Prepare docs
-        run: cp lib/iconify-picker.js docs/
+        run: |
+          mkdir -p docs/src/lib
+          cp lib/iconify-picker.js docs/src/lib/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

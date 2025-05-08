@@ -1,0 +1,94 @@
+---
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<div id={id} class="event-log">
+  <div class="log-header">
+    <h4>Event Log</h4>
+    <button class="clear-log transparent">Clear</button>
+  </div>
+  <div class="log-content"></div>
+</div>
+
+<style>
+.event-log {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  margin-top: var(--s0);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r0);
+  overflow: hidden;
+  background: var(--bg1);
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--s1) var(--s0);
+  background: var(--pri);
+  color: var(--wht);
+}
+
+.log-header h4 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.log-content {
+  padding: var(--s2) var(--s0);
+  max-height: 150px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 0.9rem;
+  display: grid;
+  gap: var(--s1);
+  align-content: start;
+}
+
+.log-entry {
+  padding-bottom: var(--s1);
+  border-bottom: 1px dashed var(--bdr);
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const logContainers = document.querySelectorAll('.event-log');
+  
+  logContainers.forEach(container => {
+    const logContent = container.querySelector('.log-content');
+    const clearBtn = container.querySelector('.clear-log');
+    const id = container.id.replace('-log', '');
+    const picker = document.getElementById(id);
+    
+    if (!logContent || !picker) return;
+    
+    const logEvent = (event) => {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.textContent = `${event.type}: ${JSON.stringify(event.detail || {})}`;
+      logContent.appendChild(entry);
+      logContent.scrollTop = logContent.scrollHeight;
+    };
+    
+    // Listen for events
+    picker.addEventListener('icon-selected', logEvent);
+    picker.addEventListener('change', logEvent);
+    
+    // Clear log
+    clearBtn?.addEventListener('click', () => {
+      logContent.innerHTML = '';
+    });
+  });
+});
+</script> 

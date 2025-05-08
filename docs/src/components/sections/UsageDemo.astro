@@ -1,0 +1,136 @@
+---
+import Section from '../ui/Section.astro';
+import Tabs from '../ui/Tabs.astro';
+import PickerDemo from '../ui/PickerDemo.astro';
+import EventLog from '../ui/EventLog.astro';
+
+const tabs = [
+  { id: 'inline-picker', text: 'Inline Mode', active: true },
+  { id: 'button-picker', text: 'Button Mode' },
+  { id: 'manual-picker', text: 'Manual Mode' }
+];
+
+const demoModes = [
+  { id: 'inline-mode-picker', mode: 'inline' },
+  { id: 'button-mode-picker', mode: 'button' },
+  { id: 'manual-mode-picker', mode: 'manual' }
+];
+
+const interactiveDemos = [
+  {
+    title: 'Theme Integration Demo',
+    description: "The component automatically adapts to your site's theme. Try toggling between light and dark mode using the theme switcher in the header.",
+    picker: {
+      collection: 'mdi',
+      theme: 'auto',
+      pageSize: '30',
+      height: '400px'
+    }
+  },
+  {
+    title: 'Button Mode Example',
+    description: 'The component can also be used in button mode:',
+    picker: {
+      collection: 'mdi',
+      theme: 'auto',
+      mode: 'button',
+      buttonLabel: 'Select an Icon',
+      pageSize: '30'
+    }
+  }
+];
+---
+
+<Section id="usage" title="Usage">
+  <p>
+    Iconify Picker can be used in different modes. Here are some demonstrations:
+  </p>
+  
+  <Tabs tabs={tabs}>
+    {demoModes.map((demo, index) => (
+      <div id={tabs[index].id} class={`showcase-section ${index === 0 ? 'active' : ''}`} data-content="tab-content">
+        <PickerDemo mode={demo.mode} id={demo.id} />
+      </div>
+    ))}
+    <EventLog id="icon-events-log" />
+  </Tabs>
+</Section>
+
+<section id="usage-demo">
+  <h2>Interactive Demo</h2>
+  
+  <div class="demo-container">
+    {interactiveDemos.map(demo => (
+      <>
+        <h3>{demo.title}</h3>
+        <p>{demo.description}</p>
+        <div class="picker-demo">
+          <iconify-picker 
+            collection={demo.picker.collection}
+            theme={demo.picker.theme}
+            mode={demo.picker.mode}
+            button-label={demo.picker.buttonLabel}
+            page-size={demo.picker.pageSize}
+            height={demo.picker.height}>
+          </iconify-picker>
+        </div>
+      </>
+    ))}
+  </div>
+</section>
+
+<style>
+.showcase-section {
+  display: none;
+}
+
+.showcase-section.active {
+  display: block;
+}
+
+.demo-container {
+  gap: var(--s3);
+  background: var(--bg1);
+  padding: var(--s3);
+  border-radius: var(--r0);
+  border: 1px solid var(--bdr);
+}
+
+.example-title {
+  margin: var(--s0) 0;
+  border-radius: var(--r0);
+}
+
+.demo-frame {
+  max-height: 70vh;
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .demo-frame {
+    max-height: 50vh;
+  }
+}
+
+.picker-demo {
+  margin: var(--s-md) 0;
+  border-radius: var(--rad);
+}
+
+.picker-demo iconify-picker {
+  max-height: calc(50vh * var(--is-mobile) + 70vh * (1 - var(--is-mobile)));
+}
+</style>
+
+<script>
+// Handle demo-specific events
+document.addEventListener('DOMContentLoaded', () => {
+  const pickers = document.querySelectorAll('iconify-picker');
+  
+  pickers.forEach(picker => {
+    picker.addEventListener('icon-selected', (e) => {
+      console.log('Selected icon:', e.detail.iconName);
+    });
+  });
+});
+</script> 

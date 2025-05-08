@@ -1,0 +1,108 @@
+---
+interface Tab {
+  id: string;
+  text: string;
+  active?: boolean;
+}
+
+interface Props {
+  tabs: Tab[];
+  contentId?: string;
+}
+
+const { tabs, contentId = 'tab-content' } = Astro.props;
+---
+
+<div class="tabs-container">
+  <div class="tab-nav">
+    {tabs.map(tab => (
+      <button data-tab={tab.id} class={tab.active ? 'active' : ''}>
+        {tab.text}
+      </button>
+    ))}
+  </div>
+  <div id={contentId} class="tab-content">
+    <slot />
+  </div>
+</div>
+
+<style>
+.tabs-container {
+  margin: var(--s0) 0;
+}
+
+.tab-nav {
+  display: flex;
+  gap: var(--s2);
+  flex-wrap: var(--f-dir, nowrap);
+}
+
+.tab-nav button {
+  background-color: var(--bg1);
+  color: var(--tx0);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r0) var(--r0) 0 0;
+  padding: var(--s1) var(--s0);
+}
+
+.tab-nav button:hover {
+  border-color: var(--pri);
+}
+
+.tab-nav button.active {
+  background-color: var(--pri);
+  color: var(--wht);
+  border-color: var(--pri);
+}
+
+.tab-content {
+  border: 1px solid var(--bdr);
+  border-radius: 0 var(--r0) var(--r0) var(--r0);
+  padding: var(--s3);
+  background: var(--bg1);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tabsContainers = document.querySelectorAll('.tabs-container');
+  
+  tabsContainers.forEach(container => {
+    const tabs = container.querySelectorAll('.tab-nav button');
+    const contentId = container.querySelector('.tab-content').id;
+    const sections = document.querySelectorAll(`[data-content="${contentId}"]`);
+    
+    // Show first tab content by default
+    if (sections.length > 0) {
+      const firstTab = tabs[0];
+      const firstTabId = firstTab.getAttribute('data-tab');
+      const firstSection = document.getElementById(firstTabId);
+      
+      if (firstSection) {
+        firstSection.classList.add('active');
+      }
+    }
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Deactivate all tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        const tabId = tab.getAttribute('data-tab');
+        
+        // Hide all sections
+        sections.forEach(section => {
+          section.classList.remove('active');
+        });
+        
+        // Show selected section
+        const activeSection = document.getElementById(tabId);
+        if (activeSection) {
+          activeSection.classList.add('active');
+        }
+      });
+    });
+  });
+});
+</script> 

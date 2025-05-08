@@ -1,0 +1,127 @@
+---
+// ThemeToggle.astro - Central theme handling component
+import lightIcon from '@assets/light.svg'
+import darkIcon from '@assets/dark.svg'
+---
+
+<button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+  <img
+    class="theme-toggle-icon dark-icon"
+    src={darkIcon.src}
+    alt="Switch to dark mode"
+    width={48}
+    height={48}
+  />
+  <img 
+    class="theme-toggle-icon light-icon" 
+    src={lightIcon.src} 
+    alt="Switch to light mode" 
+    width={48} 
+    height={48} 
+  />
+</button>
+
+<script>
+  import gradientGl from 'gradient-gl'
+
+  gradientGl('b2.f64e')
+
+  // Theme initialization and toggle functionality
+  const html = document.documentElement
+  const toggle = document.getElementById('theme-toggle')
+
+  // Initialize theme on page load
+  const setTheme = (theme) => {
+    html.classList.toggle('dark', theme === 'dark')
+    localStorage.setItem('theme', theme)
+
+    // Show notification
+    showThemeNotification(theme)
+  }
+
+  // Set initial theme
+  const storedTheme = localStorage.getItem('theme')
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light')
+  setTheme(initialTheme)
+
+  // Handle toggle click
+  toggle.addEventListener('click', () => {
+    const isDark = html.classList.toggle('dark')
+    setTheme(isDark ? 'dark' : 'light')
+  })
+
+  // Theme notification function
+  function showThemeNotification(theme) {
+    // Create notification
+    const notification = document.createElement('div')
+    notification.textContent = `Theme switched to ${theme} mode`
+    notification.classList.add('theme-notification')
+    notification.classList.add(theme)
+    document.body.appendChild(notification)
+
+    // Remove after delay
+    setTimeout(() => {
+      notification.classList.add('fade-out')
+      setTimeout(() => notification.remove(), 500)
+    }, 2000)
+  }
+</script>
+
+<style>
+  .theme-toggle {
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s;
+  }
+
+  .theme-toggle:hover {
+    background: var(--bdr);
+    transform: rotate(5deg);
+  }
+
+  .theme-toggle:active {
+    transform: scale(0.9);
+  }
+
+  .theme-toggle-icon {
+    position: absolute;
+    grid-area: 1 / 1;
+    transition:
+      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 0.3s ease;
+  }
+
+  /* In light mode, show dark icon (action to switch to dark) */
+  .theme-toggle-icon.dark-icon {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+
+  /* Hide light icon in light mode */
+  .theme-toggle-icon.light-icon {
+    opacity: 0;
+    transform: translateY(100%) rotate(10deg);
+  }
+
+  /* In dark mode, hide dark icon */
+  html.dark .theme-toggle-icon.dark-icon {
+    opacity: 0;
+    transform: translateY(-100%) rotate(-10deg);
+  }
+
+  /* In dark mode, show light icon (action to switch to light) */
+  html.dark .theme-toggle-icon.light-icon {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+</style>

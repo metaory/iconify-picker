@@ -1,0 +1,178 @@
+---
+import ThemeToggle from '../ui/ThemeToggle.astro'
+import { Image } from 'astro:assets'
+import MenuSVG from '@assets/menu.svg'
+import GithubSVG from '@assets/github.svg'
+
+const navLinks = [
+  { href: '#introduction', text: 'Introduction' },
+  { href: '#features', text: 'Features' },
+  { href: '#installation', text: 'Installation' },
+  { href: '#usage', text: 'Usage' },
+  { href: '#api', text: 'API' },
+  { href: '#events', text: 'Events' },
+  { href: '#customization', text: 'Customization' }
+]
+---
+
+<header>
+  <div class="header-content">
+    <a href="https://github.com/metaory/iconify-picker" target="_blank" class="github-link">
+      <Image src={GithubSVG} alt="GitHub" width={48} height={48} />
+    </a>
+
+    <h1 class="title">
+      <a href="/">Iconify Picker</a>
+    </h1>
+
+    <div class="controls">
+      <ThemeToggle />
+      <button class="menu-btn" aria-label="Toggle menu">
+        <Image src={MenuSVG} alt="Menu" width={48} height={48} />
+      </button>
+    </div>
+  </div>
+
+  <div class="nav-content">
+    {navLinks.map((link) => <a href={link.href}>{link.text}</a>)}
+  </div>
+</header>
+
+<style>
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    width: var(--w0);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    transition: height 0.3s ease;
+    height: var(--h1);
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    background: white;
+    width: 8px;
+    right: 0;
+    top: 0;
+    height: var(--h1);
+    filter: blur(0.4rem);
+  }
+
+  header.expanded {
+    height: auto;
+    max-height: 100vh;
+    overflow: auto;
+  }
+
+  .header-content {
+    display: grid;
+    grid-template-columns: var(--g-head);
+    align-items: center;
+    gap: var(--gap);
+    padding: 0 var(--s0);
+    height: var(--h1);
+    min-height: var(--h1);
+  }
+
+  .github-link {
+    display: flex;
+    transition: transform 0.2s;
+  }
+
+  .github-link:hover {
+    transform: scale(1.1);
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--fs-h1);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .title a {
+    color: var(--acc);
+    text-decoration: none;
+    font-family: var(--font-barcode);
+    font-size: var(--s4);
+    background-color: var(--bg2);
+    padding: var(--s1) var(--s0);
+    border-radius: var(--r0);
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: var(--s1);
+  }
+
+  .menu-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--acc);
+    padding: 0;
+    border-radius: var(--r1);
+    transition: transform 0.2s;
+  }
+
+  @media (max-width: 768px) {
+    .menu-btn {
+      display: block;
+    }
+  }
+
+  .menu-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .nav-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s0);
+    padding: var(--s0);
+    width: var(--w0);
+  }
+
+  .nav-content a {
+    color: var(--tx0);
+    text-decoration: none;
+    font-weight: 500;
+    padding: var(--s1) var(--s2);
+  }
+
+  .nav-content a:hover {
+    color: var(--pri);
+  }
+</style>
+
+<script>
+  // Toggle header expansion when menu button is clicked
+  const btn = document.querySelector('.menu-btn')
+  const header = document.querySelector('header')
+
+  if (btn) {
+    btn.addEventListener('click', () => {
+      header?.classList.toggle('expanded')
+    })
+
+    // Close menu when clicking outside of header
+    document.addEventListener('click', (e) => {
+      if (header && !header.contains(e.target as Node)) {
+        header.classList.remove('expanded')
+      }
+    })
+  }
+</script>

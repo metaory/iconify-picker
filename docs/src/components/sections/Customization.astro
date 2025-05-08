@@ -1,0 +1,1635 @@
+---
+import Section from '../ui/Section.astro'
+import ApiSection from '../ui/ApiSection.astro'
+import CodeBlock from '../ui/CodeBlock.astro'
+import Card from '../ui/Card.astro'
+
+const themingInfo = {
+  description:
+    'The component supports automatic theme detection with the theme="auto" attribute. It will adapt to your site\'s color scheme by:',
+  features: [
+    'Detecting the dark class on the HTML element',
+    'Observing theme changes in real-time',
+    "Reading your site's CSS variables for consistent styling"
+  ],
+  codeExample: `
+<iconify-picker
+  collection="mdi"
+  theme="auto">
+</iconify-picker>
+  `,
+  note: 'You can also manually set the theme with theme="dark" or theme="light".'
+}
+
+const cssVars = [
+  {
+    name: '--picker-primary',
+    defaultValue: '#e74c3c',
+    description: 'Primary accent color',
+    type: 'color',
+    category: 'main-colors'
+  },
+  {
+    name: '--picker-bg',
+    defaultValue: '#f0f8ff',
+    description: 'Background color (dark/light)',
+    type: 'color',
+    category: 'main-colors'
+  },
+  {
+    name: '--picker-text',
+    defaultValue: '#2c3e50',
+    description: 'Text color (dark/light)',
+    type: 'color',
+    category: 'main-colors'
+  },
+  {
+    name: '--picker-border',
+    defaultValue: '#c0d6e4',
+    description: 'Border color (dark/light)',
+    type: 'color',
+    category: 'main-colors'
+  },
+  {
+    name: '--picker-hover',
+    defaultValue: '#e1f0ff',
+    description: 'Hover state background',
+    type: 'color',
+    category: 'main-colors'
+  },
+  {
+    name: '--picker-header-bg',
+    defaultValue: '#e8f4ff',
+    description: 'Header background color',
+    type: 'color',
+    category: 'element-colors'
+  },
+  {
+    name: '--picker-input-bg',
+    defaultValue: '#ffffff',
+    description: 'Input fields background color',
+    type: 'color',
+    category: 'element-colors'
+  },
+  {
+    name: '--picker-input-text',
+    defaultValue: '#2c3e50',
+    description: 'Input fields text color',
+    type: 'color',
+    category: 'element-colors'
+  },
+  {
+    name: '--picker-icon-color',
+    defaultValue: '#2c3e50',
+    description: 'Icon color',
+    type: 'color',
+    category: 'element-colors'
+  },
+  {
+    name: '--picker-footer-bg',
+    defaultValue: '#e8f4ff',
+    description: 'Footer background color',
+    type: 'color',
+    category: 'element-colors'
+  },
+  {
+    name: '--picker-radius',
+    defaultValue: '12px',
+    description: 'Default border radius (used as fallback)',
+    type: 'range',
+    min: '0',
+    max: '32',
+    step: '1',
+    unit: 'px',
+    category: 'radius'
+  },
+  {
+    name: '--picker-container-radius',
+    defaultValue: '12px',
+    description: 'Border radius for main container',
+    type: 'range',
+    min: '0',
+    max: '32',
+    step: '1',
+    unit: 'px',
+    category: 'radius'
+  },
+  {
+    name: '--picker-input-radius',
+    defaultValue: '8px',
+    description: 'Border radius for inputs and controls',
+    type: 'range',
+    min: '0',
+    max: '32',
+    step: '1',
+    unit: 'px',
+    category: 'radius'
+  },
+  {
+    name: '--picker-icon-radius',
+    defaultValue: '6px',
+    description: 'Border radius for icon items',
+    type: 'range',
+    min: '0',
+    max: '32',
+    step: '1',
+    unit: 'px',
+    category: 'radius'
+  },
+  {
+    name: '--picker-button-radius',
+    defaultValue: '8px',
+    description: 'Border radius for buttons',
+    type: 'range',
+    min: '0',
+    max: '32',
+    step: '1',
+    unit: 'px',
+    category: 'radius'
+  },
+  {
+    name: '--picker-border-width',
+    defaultValue: '3px',
+    description: 'Default border width (used as fallback)',
+    type: 'range',
+    min: '0',
+    max: '16',
+    step: '1',
+    unit: 'px',
+    category: 'border'
+  },
+  {
+    name: '--picker-container-border-width',
+    defaultValue: '3px',
+    description: 'Border width for main container',
+    type: 'range',
+    min: '0',
+    max: '16',
+    step: '1',
+    unit: 'px',
+    category: 'border'
+  },
+  {
+    name: '--picker-input-border-width',
+    defaultValue: '1px',
+    description: 'Border width for inputs and controls',
+    type: 'range',
+    min: '0',
+    max: '8',
+    step: '1',
+    unit: 'px',
+    category: 'border'
+  },
+  {
+    name: '--picker-icon-border-width',
+    defaultValue: '1px',
+    description: 'Border width for icon items',
+    type: 'range',
+    min: '0',
+    max: '8',
+    step: '1',
+    unit: 'px',
+    category: 'border'
+  },
+  {
+    name: '--picker-padding',
+    defaultValue: '1rem',
+    description: 'Internal padding for elements',
+    type: 'range',
+    min: '0',
+    max: '40',
+    step: '2',
+    unit: 'px',
+    category: 'spacing'
+  },
+  {
+    name: '--picker-gap',
+    defaultValue: '0.5rem',
+    description: 'Gap between elements',
+    type: 'range',
+    min: '0',
+    max: '24',
+    step: '1',
+    unit: 'px',
+    category: 'spacing'
+  },
+  {
+    name: '--picker-icon-size',
+    defaultValue: '24px',
+    description: 'Size of the icons in the grid',
+    type: 'range',
+    min: '16',
+    max: '48',
+    step: '2',
+    unit: 'px',
+    category: 'dimensions'
+  },
+  {
+    name: '--picker-max-height',
+    defaultValue: '60vh',
+    description: 'Maximum height of the component',
+    type: 'range',
+    min: '30',
+    max: '90',
+    step: '5',
+    unit: 'vh',
+    category: 'dimensions'
+  }
+]
+
+const scrollbarVars = [
+  {
+    name: '--picker-scrollbar-width',
+    defaultValue: 'thin',
+    description: 'Scrollbar width (thin, auto, none)',
+    type: 'select',
+    options: ['thin', 'auto', 'none']
+  },
+  {
+    name: '--picker-scrollbar-color',
+    defaultValue: '#e74c3c',
+    description: 'Scrollbar thumb color',
+    type: 'color'
+  },
+  {
+    name: '--picker-scrollbar-track',
+    defaultValue: 'transparent',
+    description: 'Scrollbar track background',
+    type: 'color',
+    isTransparent: true,
+    fallbackColor: '#000000'
+  },
+  {
+    name: '--picker-scrollbar-hover',
+    defaultValue: '#ff9b92',
+    description: 'Scrollbar thumb hover color',
+    type: 'color'
+  }
+]
+
+// Dark theme overrides
+const darkThemeOverrides = {
+  '--picker-bg': '#1a2333',
+  '--picker-text': '#ecf0f1',
+  '--picker-border': '#2c3e50',
+  '--picker-hover': '#2a3f5f',
+  '--picker-header-bg': '#192230',
+  '--picker-input-bg': '#253545',
+  '--picker-input-text': '#ecf0f1',
+  '--picker-icon-color': '#ecf0f1',
+  '--picker-footer-bg': '#192230',
+  '--picker-scrollbar-color': '#ff9b92',
+  '--picker-scrollbar-hover': '#e74c3c'
+}
+
+// Generate CSS example code from the variables
+const generateCssExample = (vars, scrollVars, darkOverrides) => {
+  const cssLines = ['/* Custom CSS for iconify-picker */', 'iconify-picker {']
+
+  // Add regular CSS vars
+  for (const v of vars) {
+    cssLines.push(`  ${v.name}: ${v.defaultValue};`)
+  }
+
+  // Add scrollbar vars
+  cssLines.push('')
+  cssLines.push('  /* Scrollbar customization */')
+  for (const v of scrollVars) {
+    cssLines.push(`  ${v.name}: ${v.defaultValue};`)
+  }
+
+  cssLines.push('}')
+
+  // Add dark mode section
+  if (Object.keys(darkOverrides).length > 0) {
+    cssLines.push('')
+    cssLines.push('/* Dark mode customization */')
+    cssLines.push('@media (prefers-color-scheme: dark) {')
+    cssLines.push('  iconify-picker {')
+
+    for (const [key, value] of Object.entries(darkOverrides)) {
+      cssLines.push(`    ${key}: ${value};`)
+    }
+
+    cssLines.push('  }')
+    cssLines.push('}')
+  }
+
+  return cssLines.join('\n')
+}
+
+const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverrides)
+---
+
+<Section id="customization" title="Customization">
+  <p>
+    Iconify Picker can be styled using CSS custom properties. You can customize colors, spacing, and
+    other visual aspects to match your application's design.
+  </p>
+
+
+  <ApiSection id="theming" title="Theme Integration">
+    <p>{themingInfo.description}</p>
+    <ul>
+      {
+        themingInfo.features.map((feature) => (
+          <li>
+            <code>
+              {feature.includes('dark') ? 'dark' : feature.includes('theme') ? 'theme' : ''}
+            </code>
+            {!feature.includes('dark') && !feature.includes('theme')
+              ? feature
+              : feature.replace('dark', '')}
+          </li>
+        ))
+      }
+    </ul>
+
+    <CodeBlock lang="html" code={themingInfo.codeExample} />
+
+    <p>{themingInfo.note}</p>
+  </ApiSection>
+
+  <ApiSection id="css-vars" title="CSS Variables">
+    <table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          cssVars.map((cssVar) => (
+            <tr>
+              <td>
+                <code>{cssVar.name}</code>
+              </td>
+              <td>
+                <code>{cssVar.defaultValue}</code>
+              </td>
+              <td>{cssVar.description}</td>
+            </tr>
+          ))
+        }
+        <tr>
+          <td colspan="3" class="section-divider"><strong>Scrollbar Customization</strong></td>
+        </tr>
+        {
+          scrollbarVars.map((cssVar) => (
+            <tr>
+              <td>
+                <code>{cssVar.name}</code>
+              </td>
+              <td>
+                <code>{cssVar.defaultValue}</code>
+              </td>
+              <td>{cssVar.description}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <h4>Example CSS</h4>
+    <CodeBlock lang="css" code={cssVarsCode} />
+  </ApiSection>
+
+  <Card title="Interactive Customization" variant="example">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="edit">Edit Variables</button>
+      <button class="tab-btn" data-tab="css">View CSS</button>
+      <div class="theme-toggle">
+        <label>
+          <input type="checkbox" id="dark-mode-toggle" />
+          <span>Dark Mode</span>
+        </label>
+      </div>
+      <button id="force-update" class="force-update-btn">Force Update</button>
+    </div>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="edit-tab">
+        <div class="controls-container">
+          <div class="control-section">
+            <h4>Main Colors</h4>
+            <div class="compact-grid">
+              {
+                cssVars
+                  .filter((v) => v.type === 'color' && v.category === 'main-colors')
+                  .map((cssVar) => (
+                    <div class="range-compact">
+                      <label for={cssVar.name.substring(2)} title={cssVar.description}>
+                        {cssVar.name.replace('--picker-', '')}
+                      </label>
+                      <input
+                        type="color"
+                        id={cssVar.name.substring(2)}
+                        data-var={cssVar.name}
+                        value={cssVar.defaultValue}
+                        title={cssVar.description}
+                      />
+                      <span class="color-value">{cssVar.defaultValue}</span>
+                    </div>
+                  ))
+              }
+            </div>
+          </div>
+
+          <div class="control-section">
+            <h4>Element Colors</h4>
+            <div class="compact-grid">
+              {
+                cssVars
+                  .filter((v) => v.type === 'color' && v.category === 'element-colors')
+                  .map((cssVar) => (
+                    <div class="range-compact">
+                      <label for={cssVar.name.substring(2)} title={cssVar.description}>
+                        {cssVar.name.replace('--picker-', '')}
+                      </label>
+                      <input
+                        type="color"
+                        id={cssVar.name.substring(2)}
+                        data-var={cssVar.name}
+                        value={cssVar.defaultValue}
+                        title={cssVar.description}
+                      />
+                      <span class="color-value">{cssVar.defaultValue}</span>
+                      {cssVar.name === '--picker-icon-color' && (
+                        <button
+                          class="refresh-icons-btn"
+                          id="refresh-icons"
+                          title="Refresh all icons with this color"
+                        >
+                          <svg viewBox="0 0 24 24" width="16" height="16">
+                            <path
+                              d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  ))
+              }
+            </div>
+          </div>
+
+
+          <div class="control-section">
+            <h4>Scrollbar</h4>
+            <div class="compact-grid">
+              {
+                scrollbarVars
+                  .filter((v) => v.type === 'select')
+                  .map((cssVar) => (
+                    <div class="range-compact">
+                      <label for={cssVar.name.substring(2)} title={cssVar.description}>
+                        {cssVar.name.replace('--picker-scrollbar-', '')}
+                      </label>
+                      <select
+                        id={cssVar.name.substring(2)}
+                        data-var={cssVar.name}
+                        title={cssVar.description}
+                      >
+                        {cssVar.options.map((option) => (
+                          <option value={option} selected={cssVar.defaultValue === option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                      <span />
+                    </div>
+                  ))
+              }
+              {
+                scrollbarVars
+                  .filter((v) => v.type === 'color')
+                  .map((cssVar) => (
+                    <div class="range-compact">
+                      <label for={cssVar.name.substring(2)} title={cssVar.description}>
+                        {cssVar.name.replace('--picker-scrollbar-', '')}
+                      </label>
+                      <input
+                        type="color"
+                        id={cssVar.name.substring(2)}
+                        data-var={cssVar.name}
+                        value={cssVar.fallbackColor || cssVar.defaultValue}
+                        title={cssVar.description}
+                        disabled={cssVar.isTransparent && cssVar.defaultValue === 'transparent'}
+                      />
+                      <div class="color-value-container">
+                        <span class="color-value">{cssVar.defaultValue}</span>
+                        {cssVar.isTransparent && (
+                          <label class="transparent-option">
+                            <input
+                              type="checkbox"
+                              data-target={cssVar.name.substring(2)}
+                              checked={cssVar.defaultValue === 'transparent'}
+                            />
+                            <span>Transparent</span>
+                          </label>
+                        )}
+                      </div>
+                    </div>
+                  ))
+              }
+            </div>
+          </div>
+
+          <div class="control-section">
+            <h4>Border Radius</h4>
+            <div class="compact-grid">
+              {
+                cssVars
+                  .filter((v) => v.type === 'range' && v.category === 'radius')
+                  .map((cssVar) => (
+                    <div class="range-compact">
+                      <label for={cssVar.name.substring(2)} title={cssVar.description}>
+                        {cssVar.name.replace('--picker-', '')}
+                      </label>
+                      <input
+                        type="range"
+                        id={cssVar.name.substring(2)}
+                        data-var={cssVar.name}
+                        data-unit={cssVar.unit}
+                        min={cssVar.min}
+                        max={cssVar.max}
+                        step={cssVar.step}
+                        value={cssVar.defaultValue.replace(/[^\d.]/g, '')}
+                        title={cssVar.description}
+                      />
+                      <span class="range-value">{cssVar.defaultValue}</span>
+                    </div>
+                  ))
+              }
+            </div>
+          </div>
+
+          <div class="control-section">
+            <h4>Border Width</h4>
+            <div class="compact-grid">
+              {
+                cssVars
+                  .filter((v) => v.type === 'range' && v.category === 'border')
+                  .map((cssVar) => (
+                    <div class="range-compact">
+                      <label for={cssVar.name.substring(2)} title={cssVar.description}>
+                        {cssVar.name.replace('--picker-', '')}
+                      </label>
+                      <input
+                        type="range"
+                        id={cssVar.name.substring(2)}
+                        data-var={cssVar.name}
+                        data-unit={cssVar.unit}
+                        min={cssVar.min}
+                        max={cssVar.max}
+                        step={cssVar.step}
+                        value={cssVar.defaultValue.replace(/[^\d.]/g, '')}
+                        title={cssVar.description}
+                      />
+                      <span class="range-value">{cssVar.defaultValue}</span>
+                    </div>
+                  ))
+              }
+            </div>
+          </div>
+
+          <div class="control-section">
+            <h4>Spacing & Dimensions</h4>
+            <div class="compact-grid">
+              {
+                cssVars
+                  .filter(
+                    (v) =>
+                      v.type === 'range' &&
+                      (v.category === 'spacing' || v.category === 'dimensions')
+                  )
+                  .map((cssVar) => (
+                    <div class="range-compact">
+                      <label for={cssVar.name.substring(2)} title={cssVar.description}>
+                        {cssVar.name.replace('--picker-', '')}
+                      </label>
+                      <input
+                        type="range"
+                        id={cssVar.name.substring(2)}
+                        data-var={cssVar.name}
+                        data-unit={cssVar.unit}
+                        min={cssVar.min}
+                        max={cssVar.max}
+                        step={cssVar.step}
+                        value={cssVar.defaultValue.replace(/[^\d.]/g, '')}
+                        title={cssVar.description}
+                      />
+                      <span class="range-value">{cssVar.defaultValue}</span>
+                    </div>
+                  ))
+              }
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="tab-pane" id="css-tab">
+        <CodeBlock id="generated-css-block" lang="css" code={cssVarsCode} />
+      </div>
+    </div>
+
+    <div class="custom-picker-container">
+      <iconify-picker
+        id="demo-picker"
+        class="custom-styled"
+        collection="mdi"
+        placeholder="Search icons..."
+        icon-size="24"
+        theme="auto"
+        page-size="36"
+      >
+      </iconify-picker>
+    </div>
+  </Card>
+</Section>
+
+<style>
+  .custom-picker-container {
+    margin-top: var(--s-md);
+  }
+
+  /* Helper CSS to fix component styling issues */
+  iconify-picker {
+    /* Ensure the variables are properly inherited by the component */
+    display: block;
+  }
+
+  :global(.custom-styled) {
+    /* Main colors */
+    --picker-primary: #e74c3c;
+    --picker-bg: #f0f8ff;
+    --picker-text: #2c3e50;
+    --picker-border: #c0d6e4;
+    --picker-hover: #e1f0ff;
+
+    /* Element-specific colors */
+    --picker-header-bg: #e8f4ff;
+    --picker-input-bg: #ffffff;
+    --picker-input-text: #2c3e50;
+    --picker-icon-color: #2c3e50;
+    --picker-footer-bg: #e8f4ff;
+
+    /* Radius variables */
+    --picker-radius: 12px;
+    --picker-container-radius: 12px;
+    --picker-input-radius: 8px;
+    --picker-icon-radius: 6px;
+    --picker-button-radius: 8px;
+
+    /* Border width variables */
+    --picker-border-width: 3px;
+    --picker-container-border-width: 3px;
+    --picker-input-border-width: 1px;
+    --picker-icon-border-width: 1px;
+
+    /* Spacing variables */
+    --picker-padding: 16px;
+    --picker-gap: 8px;
+
+    /* Dimension variables */
+    --picker-icon-size: 24px;
+    --picker-max-height: 60vh;
+
+    /* Scrollbar variables */
+    --picker-scrollbar-width: thin;
+    --picker-scrollbar-color: #e74c3c;
+    --picker-scrollbar-track: transparent;
+    --picker-scrollbar-hover: #ff9b92;
+
+    margin: 0 auto;
+  }
+
+  :global(html.dark .custom-styled) {
+    /* Dark theme variables */
+    --picker-bg: #1a2333;
+    --picker-text: #ecf0f1;
+    --picker-border: #2c3e50;
+    --picker-hover: #2a3f5f;
+    --picker-header-bg: #192230;
+    --picker-input-bg: #253545;
+    --picker-input-text: #ecf0f1;
+    --picker-icon-color: #ecf0f1;
+    --picker-footer-bg: #192230;
+    --picker-scrollbar-color: #ff9b92;
+    --picker-scrollbar-hover: #e74c3c;
+  }
+
+  /* Direct styles for Shadow DOM parts */
+  :global(.custom-styled::part(container)) {
+    border: var(--picker-container-border-width) solid var(--picker-border) !important;
+    border-radius: var(--picker-container-radius) !important;
+    background-color: var(--picker-bg) !important;
+    color: var(--picker-text) !important;
+  }
+
+  :global(.custom-styled::part(header)) {
+    background-color: var(--picker-header-bg) !important;
+    padding: var(--picker-padding) !important;
+    gap: var(--picker-gap) !important;
+  }
+
+  :global(.custom-styled::part(search)),
+  :global(.custom-styled::part(select)) {
+    background-color: var(--picker-input-bg) !important;
+    color: var(--picker-input-text) !important;
+    border-width: var(--picker-input-border-width) !important;
+    border-color: var(--picker-border) !important;
+    border-radius: var(--picker-input-radius) !important;
+  }
+
+  :global(.custom-styled::part(icon-image)) {
+    color: var(--picker-icon-color) !important;
+    fill: currentColor !important;
+    stroke: currentColor !important;
+  }
+
+  :global(.custom-styled::part(icon-image-container)) {
+    color: var(--picker-icon-color) !important;
+  }
+
+  /* Add specific selector for SVG elements inside icons */
+  :global(.custom-styled) svg,
+  :global(.custom-styled) img[part='icon-image'] {
+    color: var(--picker-icon-color) !important;
+    fill: var(--picker-icon-color) !important;
+    stroke: var(--picker-icon-color) !important;
+  }
+
+  :global(.custom-styled::part(button)) {
+    background-color: var(--picker-input-bg) !important;
+    color: var(--picker-input-text) !important;
+    border-width: var(--picker-input-border-width) !important;
+    border-color: var(--picker-border) !important;
+    border-radius: var(--picker-button-radius) !important;
+  }
+
+  :global(.custom-styled::part(button):hover) {
+    background-color: var(--picker-primary) !important;
+    color: white !important;
+  }
+
+  :global(.custom-styled::part(footer)) {
+    background-color: var(--picker-footer-bg) !important;
+    padding: var(--picker-padding) !important;
+    gap: var(--picker-gap) !important;
+  }
+
+  :global(.custom-styled::part(grid)) {
+    padding: var(--picker-padding) !important;
+    gap: var(--picker-gap) !important;
+    scrollbar-width: var(--picker-scrollbar-width) !important;
+    scrollbar-color: var(--picker-scrollbar-color) var(--picker-scrollbar-track) !important;
+  }
+
+  :global(.custom-styled::part(icon)) {
+    border-width: var(--picker-icon-border-width) !important;
+    border-radius: var(--picker-icon-radius) !important;
+    padding: calc(var(--picker-padding) * 0.5) !important;
+  }
+
+  :global(.custom-styled::part(grid)::-webkit-scrollbar-thumb) {
+    background: var(--picker-scrollbar-color) !important;
+  }
+
+  :global(.custom-styled::part(grid)::-webkit-scrollbar-thumb:hover) {
+    background: var(--picker-scrollbar-hover) !important;
+  }
+
+  :global(.custom-styled::part(grid)::-webkit-scrollbar-track) {
+    background: var(--picker-scrollbar-track) !important;
+  }
+
+  :global(.custom-styled::part(pagination)) {
+    gap: var(--picker-gap) !important;
+  }
+
+  .section-divider {
+    background-color: var(--bg2);
+    text-align: center;
+    padding: var(--s2);
+    border-bottom: 2px solid var(--bdr);
+  }
+
+  /* Interactive UI */
+  .tabs {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--s2);
+    border-bottom: 2px solid var(--bdr);
+    padding-bottom: var(--s1);
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: var(--s1) var(--s0);
+    cursor: pointer;
+    opacity: 0.7;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+
+  .tab-btn.active {
+    opacity: 1;
+    border-bottom: 3px solid var(--pri);
+    margin-bottom: -2px;
+  }
+
+  .theme-toggle {
+    margin-left: auto;
+    font-size: 0.85rem;
+  }
+
+  .theme-toggle label {
+    display: flex;
+    align-items: center;
+    gap: var(--s1);
+    cursor: pointer;
+  }
+
+  .tab-content {
+    padding: var(--s1) 0;
+  }
+
+  .tab-pane {
+    display: none;
+  }
+
+  .tab-pane.active {
+    display: block;
+  }
+
+  /* CodeBlock component styling within the CSS tab */
+  .tab-pane#css-tab {
+    margin-bottom: var(--s0);
+  }
+
+  .tab-pane#css-tab :global(.code-block) {
+    margin: 0;
+  }
+
+  .tab-pane#css-tab :global(pre) {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .controls-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--s0);
+    margin-bottom: var(--s2);
+  }
+
+  @media (max-width: 960px) {
+    .controls-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .controls-container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .control-section {
+    min-width: 0;
+  }
+
+  .control-section h4 {
+    font-size: 0.9rem;
+    margin-bottom: var(--s1);
+    color: var(--tx1);
+    border-bottom: 1px solid var(--bdr);
+    padding-bottom: 2px;
+  }
+
+  .compact-grid {
+    display: grid;
+    gap: 4px;
+  }
+
+  .range-compact {
+    display: grid;
+    grid-template-columns: minmax(60px, 2fr) minmax(48px, 1fr) minmax(60px, 2fr);
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    position: relative;
+  }
+
+  .range-compact label {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .range-compact input[type='range'] {
+    height: 6px;
+    width: 80px;
+    min-width: 0;
+  }
+
+  .range-compact input[type='color'] {
+    height: 20px;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--bdr);
+    border-radius: var(--r1);
+  }
+
+  .range-value,
+  .color-value {
+    min-width: 40px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    text-align: right;
+  }
+
+  .color-value-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .color-value {
+    min-width: 40px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    text-align: center;
+    padding: 1px 3px;
+    border-radius: var(--r1);
+    display: inline-block;
+  }
+
+  .transparent-option {
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  .transparent-option input {
+    margin: 0;
+    height: 10px;
+    width: 10px;
+  }
+
+  .refresh-icons-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--pri);
+    border: none;
+    color: white;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r1);
+    cursor: pointer;
+  }
+
+  .preview-picker {
+    background: var(--pri);
+    border: 3px solid #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .preview-picker-result {
+    background: var(--pri);
+    padding: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .preview-picker-empty {
+    background: var(--pri);
+    padding: 1rem;
+  }
+
+  .range-compact select {
+    padding: 2px;
+    font-size: 0.75rem;
+    width: 100%;
+    height: 22px;
+  }
+
+  .force-update-btn {
+    margin-left: 1rem;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--c-pri);
+    color: white;
+    border: none;
+    border-radius: var(--rad-sm);
+    cursor: pointer;
+  }
+
+  .force-update-btn:hover {
+    background: var(--c-pri);
+  }
+</style>
+
+<script define:vars={{ cssVars, scrollbarVars, darkThemeOverrides }}>
+  // Client-side code can directly access the variables passed from the server component
+
+  // Create the default variables map from cssVars and scrollbarVars
+  const DEFAULT_VARS = [...cssVars, ...scrollbarVars].reduce(
+    (vars, item) => ({ ...vars, [item.name]: item.defaultValue }),
+    {}
+  )
+
+  // Component state with active variables
+  const state = {
+    isDarkMode: document.documentElement.classList.contains('dark'),
+    variables: { ...DEFAULT_VARS }
+  }
+
+  // Pure functions for DOM operations
+  const dom = {
+    // Get element by ID with optional parent
+    get: (id, parent = document) => parent.getElementById(id),
+
+    // Query selector with optional parent
+    query: (selector, parent = document) => parent.querySelector(selector),
+
+    // Query all elements
+    queryAll: (selector, parent = document) => [...parent.querySelectorAll(selector)],
+
+    // Create element with attributes and properties
+    create: (tag, attrs = {}) => {
+      const el = document.createElement(tag)
+
+      const picker = (obj, fn) => Object.entries(obj).forEach(fn)
+
+      // Convert nested object handlers into a flat map of key->function
+      const handlerMap = {
+        style: (obj) => picker(obj, ([prop, val]) => (el.style[prop] = val)),
+        dataset: (obj) => picker(obj, ([prop, val]) => (el.dataset[prop] = val)),
+        attrs: (obj) => picker(obj, ([attr, val]) => el.setAttribute(attr, val)),
+        text: (val) => (el.textContent = val),
+        html: (val) => (el.innerHTML = val),
+        children: (arr) =>
+          Array.isArray(arr) && arr.filter(Boolean).forEach((child) => el.appendChild(child))
+      }
+
+      // Process each attribute with the appropriate handler
+      picker(attrs, ([key, value]) => {
+        // Handle event listeners
+        if (key.startsWith('on') && typeof value === 'function') {
+          el.addEventListener(key.slice(2).toLowerCase(), value)
+          return
+        }
+
+        // Use the mapped handler or set property directly
+        ;(handlerMap[key] || (() => (el[key] = value)))(value)
+      })
+
+      return el
+    },
+
+    // DOM utility functions
+    setNextSiblingText: (el, text) => {
+      const sibling = el.nextElementSibling
+      if (sibling) sibling.textContent = text
+      return el
+    },
+
+    // Safely access and modify shadow DOM
+    withShadow: (element, fn, wait = 100) => {
+      setTimeout(() => {
+        try {
+          const shadowRoot = element.shadowRoot
+          if (shadowRoot) fn(shadowRoot)
+        } catch (_) {
+          /* Silent fail */
+        }
+      }, wait)
+      return element
+    }
+  }
+
+  // Color utility functions
+  const colorUtils = {
+    // Calculate luminance from hex color
+    getLuminance: (hexColor) => {
+      if (!hexColor || hexColor === 'transparent' || !hexColor.startsWith('#')) {
+        return 0.5 // Default middle luminance for invalid colors
+      }
+
+      const r = parseInt(hexColor.substr(1, 2), 16)
+      const g = parseInt(hexColor.substr(3, 2), 16)
+      const b = parseInt(hexColor.substr(5, 2), 16)
+
+      // Perceived luminance formula (ITU-R BT.709)
+      return (0.299 * r + 0.587 * g + 0.114 * b) / 255
+    },
+
+    // Get contrasting text color (black or white) based on background
+    getContrastColor: (hexColor) => {
+      const luminance = colorUtils.getLuminance(hexColor)
+      return luminance > 0.5 ? '#000' : '#fff'
+    },
+
+    // Apply color styling to an element
+    applyColorStyling: (element, colorValue) => {
+      if (!element) return
+
+      element.textContent = colorValue
+
+      if (colorValue === 'transparent') {
+        // Use striped pattern for transparent
+        element.style.background =
+          'repeating-linear-gradient(45deg, #ccc, #ccc 2px, #fff 2px, #fff 4px)'
+        element.style.color = '#000'
+      } else {
+        // Use color with contrasting text
+        element.style.backgroundColor = colorValue
+        element.style.color = colorUtils.getContrastColor(colorValue)
+      }
+
+      return element
+    }
+  }
+
+  // CSS variable utilities
+  const cssVarUtils = {
+    // Returns all variations of a CSS variable name
+    variations: (name) => ({
+      standard: name,
+      internal: name.replace('--picker-', '--'),
+      shorthand: name.replace('--picker-', '')
+    }),
+
+    // Apply a CSS variable with all its variations to an element
+    applyAll: (element, name, value) => {
+      const vars = cssVarUtils.variations(name)
+      element.style.setProperty(vars.standard, value, 'important')
+      element.style.setProperty(vars.internal, value, 'important')
+      element.style.setProperty(`--${vars.shorthand}`, value, 'important')
+      return element
+    },
+
+    // Apply a map of CSS variables to an element
+    applyMap: (element, varMap) => {
+      const apply = (name, value) => cssVarUtils.applyAll(element, name, value)
+      Object.entries(varMap).forEach(([name, value]) => apply(name, value))
+      return element
+    }
+  }
+
+  // Higher-order function for input handlers
+  const createInputHandler =
+    ({ getValue, updateDisplay = () => {} }) =>
+    (input) => ({
+      getValue: () => getValue(input),
+      updateDisplay: () => updateDisplay(input)
+    })
+
+  // Input type handlers using the higher-order function
+  const inputHandlers = {
+    color: createInputHandler({
+      getValue: (input) => input.value,
+      updateDisplay: (input) => {
+        const sibling = input.nextElementSibling
+        if (!sibling) return
+
+        colorUtils.applyColorStyling(sibling, input.value)
+      }
+    }),
+
+    range: createInputHandler({
+      getValue: (input) => `${input.value}${input.dataset.unit || ''}`,
+      updateDisplay: (input) =>
+        dom.setNextSiblingText(input, `${input.value}${input.dataset.unit || ''}`)
+    }),
+
+    select: createInputHandler({
+      getValue: (input) => input.value,
+      updateDisplay: (input) => dom.setNextSiblingText(input, input.value)
+    }),
+
+    checkbox: createInputHandler({
+      getValue: (input) => {
+        const targetId = input.dataset.target
+        if (!targetId) return null
+
+        const colorInput = dom.get(targetId)
+        if (!colorInput) return null
+
+        return input.checked ? 'transparent' : colorInput.value
+      },
+      updateDisplay: (input) => {
+        const targetId = input.dataset.target
+        if (!targetId) return
+
+        const colorInput = dom.get(targetId)
+        if (!colorInput) return
+
+        colorInput.disabled = input.checked
+
+        // Find the variable this is for
+        const varName = `--picker-${targetId}`
+        const valueDisplay = colorInput.parentElement.parentElement.querySelector('.color-value')
+
+        if (valueDisplay) {
+          const value = input.checked ? 'transparent' : colorInput.value
+          colorUtils.applyColorStyling(valueDisplay, value)
+        }
+      }
+    }),
+
+    // Default fallback handler
+    default: createInputHandler({
+      getValue: () => null,
+      updateDisplay: () => {}
+    })
+  }
+
+  // Get handler for a specific input element
+  const getInputHandler = (input) =>
+    (
+      inputHandlers[input.type] ||
+      inputHandlers[input.tagName?.toLowerCase()] ||
+      inputHandlers.default
+    )(input)
+
+  // Factory for creating picker components
+  const createPicker = () =>
+    dom.create('iconify-picker', {
+      id: 'demo-picker',
+      className: 'custom-styled',
+      attrs: {
+        collection: 'mdi',
+        placeholder: 'Search icons...',
+        'icon-size': '24',
+        theme: state.isDarkMode ? 'dark' : 'light',
+        'page-size': '36'
+      }
+    })
+
+  // Apply style updates to the picker
+  const applyStyles = (picker, styles) => {
+    // Set theme attribute
+    picker.setAttribute('theme', state.isDarkMode ? 'dark' : 'light')
+
+    // Apply all CSS variables
+    cssVarUtils.applyMap(picker, styles)
+
+    // Force repaint with minimal reflows
+    const display = picker.style.display
+    picker.style.display = 'none'
+    void picker.offsetHeight // Trigger reflow
+    picker.style.display = display || 'block'
+
+    // Apply direct styles to shadow DOM
+    dom.withShadow(picker, (shadow) => {
+      const container = shadow.querySelector('.container')
+      if (container) {
+        Object.assign(container.style, {
+          borderWidth: styles['--picker-border-width'],
+          borderColor: styles['--picker-border'],
+          borderRadius: styles['--picker-radius'],
+          backgroundColor: styles['--picker-bg'],
+          color: styles['--picker-text']
+        })
+      }
+    })
+
+    return picker
+  }
+
+  // Process container and either find or create the picker
+  const getOrCreatePicker = () =>
+    dom.get('demo-picker') ||
+    ((container) =>
+      container &&
+      ((container.innerHTML = ''), container.appendChild(createPicker()), dom.get('demo-picker')))(
+      dom.query('.custom-picker-container')
+    )
+
+  // Main function to update the component
+  const updateComponent = () => {
+    const picker = getOrCreatePicker()
+    if (picker) {
+      applyStyles(picker, state.variables)
+      generateCSSOutput()
+    }
+  }
+
+  // Generate CSS code preview
+  const generateCSSOutput = () => {
+    // Format CSS variables map to string
+    const formatVars = (vars) =>
+      Object.entries(vars)
+        .map(([key, value]) => `  ${key}: ${value};`)
+        .join('\n')
+
+    // Build CSS sections
+    const mainCSS = `iconify-picker {\n${formatVars(state.variables)}\n}`
+
+    // Conditional dark mode CSS
+    const hasDarkVars = Object.keys(darkThemeOverrides).length > 0
+    const darkCSS = hasDarkVars
+      ? `\n\n/* Dark mode customization */\n@media (prefers-color-scheme: dark) {\n  iconify-picker {\n${formatVars(
+          darkThemeOverrides
+        )
+          .split('\n')
+          .map((line) => `  ${line}`)
+          .join('\n')}\n  }\n}`
+      : ''
+
+    // Create the final CSS content
+    const cssContent = `/* Custom CSS for iconify-picker */\n${mainCSS}${darkCSS}`
+    
+    // Update both the hidden output and the CodeBlock
+    const codeBlockContainer = dom.get('generated-css-block')
+    if (codeBlockContainer) {
+      // Find the code element inside the CodeBlock
+      const codeElement = codeBlockContainer.querySelector('pre code')
+      if (codeElement) {
+        // Update the text content
+        codeElement.textContent = cssContent
+        
+        // Force syntax highlighting refresh
+        if (codeElement.parentElement._Prism) {
+          try {
+            codeElement.parentElement._Prism.highlightElement(codeElement)
+          } catch (e) {
+            // Silent fail for highlighting errors
+          }
+        }
+      }
+    }
+  }
+
+  // Process input change and update state
+  const updateVariableFromInput = (input) => {
+    const varName = input.dataset.var
+    if (!varName) return
+
+    const handler = getInputHandler(input)
+    const value = handler.getValue()
+
+    if (value) {
+      handler.updateDisplay()
+      state.variables[varName] = value
+      updateComponent()
+    }
+  }
+
+  // Event handlers
+  const handlers = {
+    // Handle input changes
+    inputChange: (e) => updateVariableFromInput(e.target),
+
+    // Debounced input handler for costly operations
+    debouncedInputChange: (() => {
+      let timer
+      return (e) => {
+        clearTimeout(timer)
+        timer = setTimeout(() => updateVariableFromInput(e.target), 200)
+      }
+    })(),
+
+    // Explicitly refresh icon colors
+    refreshIcons: () => {
+      const picker = dom.get('demo-picker')
+      if (picker) {
+        // First update component to ensure CSS vars are applied
+        applyStyles(picker, state.variables)
+
+        // Then call the component's force redraw method if it exists
+        if (typeof picker.forceRedraw === 'function') {
+          picker.forceRedraw()
+        } else {
+          // Force a full update if method doesn't exist
+          updateComponent()
+        }
+      }
+    },
+
+    // Toggle dark mode
+    toggleDarkMode: () => {
+      const darkModeToggle = dom.get('dark-mode-toggle')
+      if (!darkModeToggle) return
+
+      state.isDarkMode = darkModeToggle.checked
+
+      // Apply dark theme or reset to defaults using functional approach
+      state.variables = {
+        ...state.variables,
+        ...(state.isDarkMode
+          ? darkThemeOverrides
+          : Object.fromEntries(
+              Object.keys(darkThemeOverrides).map((key) => [key, DEFAULT_VARS[key] || ''])
+            ))
+      }
+
+      updateComponent()
+    },
+
+    // Handle tab switching
+    tabSwitch: (e) => {
+      const tabId = e.target.dataset.tab
+      if (!tabId) return
+
+      // Update UI state
+      dom
+        .queryAll('.tab-btn')
+        .forEach((btn) => btn.classList.toggle('active', btn.dataset.tab === tabId))
+
+      dom
+        .queryAll('.tab-pane')
+        .forEach((pane) => pane.classList.toggle('active', pane.id === `${tabId}-tab`))
+
+      // Generate CSS if on CSS tab
+      if (tabId === 'css') generateCSSOutput()
+    }
+  }
+
+  // Higher-order function to create initializers
+  const createInitializer = (handler) => (input, value) => {
+    handler(input, value)
+    return input
+  }
+
+  // Input type initializers
+  const initializers = {
+    color: createInitializer((input, value) => {
+      input.value = value
+      const sibling = input.nextElementSibling
+      if (sibling && sibling.classList.contains('color-value')) {
+        colorUtils.applyColorStyling(sibling, value)
+      }
+    }),
+
+    range: createInitializer((input, value) => {
+      input.value = value.replace(/[^\d.]/g, '')
+      dom.setNextSiblingText(input, value)
+    }),
+
+    select: createInitializer((input, value) => {
+      input.value = value
+      dom.setNextSiblingText(input, value)
+    }),
+
+    default: createInitializer(() => {})
+  }
+
+  // Get the appropriate initializer for an input type
+  const getInitializer = (input) =>
+    initializers[input.type] || initializers[input.tagName?.toLowerCase()] || initializers.default
+
+  // Initialize inputs from default values
+  const initializeInputs = () => {
+    // Apply to each input
+    dom.queryAll('input[data-var], select[data-var]').forEach((input) => {
+      const varName = input.dataset.var
+      const defaultValue = DEFAULT_VARS[varName] || ''
+
+      // Special case for color inputs that may be transparent
+      const varDef = [...cssVars, ...scrollbarVars].find((v) => v.name === varName)
+
+      // Initialize input and add to state
+      if (varDef?.isTransparent && defaultValue === 'transparent') {
+        // Find and check the transparent checkbox
+        const transparentCheckbox = dom
+          .queryAll('.transparent-option input[type="checkbox"]')
+          .find((cb) => cb.dataset.target === input.id)
+
+        if (transparentCheckbox) {
+          transparentCheckbox.checked = true
+          input.disabled = true
+        }
+      } else {
+        getInitializer(input)(input, defaultValue)
+      }
+
+      state.variables[varName] = defaultValue
+    })
+
+    // Initialize transparent checkboxes
+    dom.queryAll('.transparent-option input[type="checkbox"]').forEach((checkbox) => {
+      const targetId = checkbox.dataset.target
+      if (!targetId) return
+
+      const varName = `--picker-${targetId}`
+      const defaultValue = DEFAULT_VARS[varName] || ''
+
+      checkbox.checked = defaultValue === 'transparent'
+
+      // Disable the color input if transparent
+      const colorInput = dom.get(targetId)
+      if (colorInput) {
+        colorInput.disabled = checkbox.checked
+      }
+    })
+
+    // Apply dark mode variables if needed
+    if (state.isDarkMode) {
+      Object.assign(state.variables, darkThemeOverrides)
+    }
+  }
+
+  // Bind all event listeners
+  const bindEvents = () => {
+    // Map selectors to event handlers
+    const eventMap = {
+      // Use debounced handler for icon color to prevent lag
+      'input[data-var="--picker-icon-color"]': [
+        ['input', handlers.debouncedInputChange],
+        ['change', handlers.inputChange]
+      ],
+      'input[data-var], select[data-var]': [['input', handlers.inputChange]],
+      'input[type="color"][data-var]': [['change', handlers.inputChange]],
+      '.tab-btn': [['click', handlers.tabSwitch]],
+      '#dark-mode-toggle': [['change', handlers.toggleDarkMode]],
+      '#force-update': [['click', updateComponent]],
+      '#refresh-icons': [['click', handlers.refreshIcons]]
+    }
+
+    // Apply all bindings using the picker pattern
+    const bind = (selector, events) => {
+      const elements = dom.queryAll(selector)
+      elements.forEach((element) => {
+        events.forEach(([event, handler]) => {
+          element.addEventListener(event, handler)
+        })
+      })
+    }
+
+    Object.entries(eventMap).forEach(([selector, events]) => bind(selector, events))
+
+    // Sync dark mode toggle with state
+    const darkModeToggle = dom.get('dark-mode-toggle')
+    if (darkModeToggle) {
+      darkModeToggle.checked = state.isDarkMode
+    }
+  }
+
+  // Set up mutation observer to detect component mounting
+  const observeComponentAddition = () => {
+    // Predicate to check if a node is our picker
+    const isIconifyPicker = (node) =>
+      node.id === 'demo-picker' || (node.tagName && node.tagName.toLowerCase() === 'iconify-picker')
+
+    // Create and setup observer
+    const observer = new MutationObserver((mutations) => {
+      const pickerAdded = mutations.some(
+        (mutation) =>
+          mutation.type === 'childList' && Array.from(mutation.addedNodes).some(isIconifyPicker)
+      )
+
+      if (pickerAdded) updateComponent()
+    })
+
+    // Start observing
+    const container = dom.query('.custom-picker-container')
+    if (container) {
+      observer.observe(container, { childList: true, subtree: true })
+    }
+
+    return observer
+  }
+
+  // Initialize everything
+  const initialize = () => {
+    initializeInputs()
+    bindEvents()
+    updateComponent()
+    
+    // Generate CSS output on initialization
+    // This ensures code is ready when user switches to CSS tab
+    setTimeout(generateCSSOutput, 100)
+  }
+
+  // Start the customization flow
+  const startCustomization = () => {
+    initialize()
+    observeComponentAddition()
+  }
+
+  // Register initialization events
+  document.addEventListener('DOMContentLoaded', startCustomization)
+  window.addEventListener('load', () => {
+    if (!dom.get('demo-picker')) startCustomization()
+  })
+
+  // Immediate initialization
+  setTimeout(startCustomization, 0)
+</script>

@@ -1,0 +1,62 @@
+---
+import Section from '../ui/Section.astro';
+import ApiSection from '../ui/ApiSection.astro';
+
+const methods = [
+  { name: 'open()', description: 'Opens the icon picker dialog.' },
+  { name: 'close()', description: 'Closes the icon picker dialog.' },
+  { name: 'toggle()', description: 'Toggles the icon picker dialog open/close state.' },
+  { name: 'setValue(icon)', description: 'Sets the selected icon programmatically.' },
+  { name: 'getValue()', description: 'Gets the currently selected icon.' }
+];
+
+const properties = [
+  { name: 'mode', default: '"inline"', description: 'Picker display mode. Options: "inline", "button", "manual"' },
+  { name: 'icon', default: '""', description: 'The currently selected icon in "prefix:name" format' },
+  { name: 'collections', default: '[""]', description: 'Array of icon collections to display' },
+  { name: 'buttonLabel', default: '"Pick Icon"', description: 'Label text for button mode' },
+  { name: 'placeholder', default: '"Search icons..."', description: 'Placeholder text for search input' }
+];
+---
+
+<Section id="api" title="API Reference">
+  <ApiSection id="methods" title="Methods">
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {methods.map(method => (
+          <tr>
+            <td><code>{method.name}</code></td>
+            <td>{method.description}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </ApiSection>
+
+  <ApiSection id="properties" title="Properties">
+    <table>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {properties.map(prop => (
+          <tr>
+            <td><code>{prop.name}</code></td>
+            <td><code>{prop.default}</code></td>
+            <td>{prop.description}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </ApiSection>
+</Section> 

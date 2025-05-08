@@ -1,0 +1,37 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  variant?: 'default' | 'api';
+}
+
+const { id, title, variant = 'default' } = Astro.props;
+---
+
+<section id={id} class={`section ${variant === 'api' ? 'api-section' : ''}`}>
+  {variant === 'api' ? <h3>{title}</h3> : <h2>{title}</h2>}
+  <slot />
+</section>
+
+<style>
+.section {
+  margin-bottom: var(--s4);
+  scroll-margin-top: 80px;
+  max-width: var(--w0);
+}
+
+.api-section {
+  margin-bottom: var(--s3);
+  border-radius: var(--r0);
+}
+
+.api-section h3 {
+  margin-top: 0;
+  padding-bottom: var(--s1);
+  border-bottom: 1px solid var(--bdr);
+}
+
+.section h2, .section h3 {
+  overflow-wrap: break-word;
+}
+</style> 

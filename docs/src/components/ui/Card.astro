@@ -1,0 +1,55 @@
+---
+interface Props {
+  title?: string;
+  variant?: 'feature' | 'example';
+  description?: string;
+}
+
+const { title, variant = 'example', description } = Astro.props;
+---
+
+<div class={`card ${variant}-card`}>
+  {title && (variant === 'feature' ? 
+    <strong>{title}</strong> : 
+    <h3>{title}</h3>
+  )}
+  {description && <span>{description}</span>}
+  <slot />
+</div>
+
+<style>
+.card {
+  border-radius: var(--r0);
+  background-color: var(--bg1);
+  max-width: var(--w0);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-card {
+  padding: var(--s3);
+  border: 1px solid var(--pri);
+}
+
+.feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card strong {
+  display: block;
+  margin-bottom: var(--s2);
+  color: var(--pri);
+  font-size: 1.1rem;
+}
+
+.example-card {
+  margin-top: var(--s3);
+  padding: var(--s0);
+  border: 1px solid var(--bdr);
+}
+
+.example-card h3 {
+  margin-top: 0;
+  margin-bottom: var(--s2);
+}
+</style> 

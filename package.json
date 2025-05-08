@@ -13,7 +13,6 @@
     ".": "./lib/iconify-picker.js"
   },
   "scripts": {
-    "dev": "npx vite docs --config vite.config.js"
   },
   "keywords":[
     "iconify",

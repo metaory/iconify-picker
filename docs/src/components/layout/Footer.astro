@@ -1,0 +1,25 @@
+---
+// Footer.astro - Site footer component
+---
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; <script is:inline>document.write(new Date().getFullYear())</script> Iconify Picker</p>
+  </div>
+</footer>
+
+<style>
+.footer {
+  border-top: 1px solid var(--pri);
+  padding: var(--s3) 0;
+  text-align: center;
+  color: var(--tx1);
+  background-color: var(--bg1);
+  width: var(--w0);
+  grid-column: 1 / -1;
+}
+
+.container {
+  padding: 0 var(--s0);
+}
+</style> 

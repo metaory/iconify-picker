@@ -1,0 +1,75 @@
+---
+import Section from '../ui/Section.astro'
+import CodeBlock from '../ui/CodeBlock.astro'
+
+const installMethods = [
+  {
+    title: 'NPM Package',
+    steps: [
+      {
+        description: 'Install the package:',
+        code: 'npm install @metaory/iconify-picker',
+        language: 'bash'
+      },
+      {
+        description: 'Then import it in your HTML:',
+        code: '<script type="module" src="node_modules/@metaory/iconify-picker/dist/iconify-picker.js"></script>',
+        language: 'html'
+      }
+    ]
+  },
+  {
+    title: 'CDN',
+    steps: [
+      {
+        description: 'You can also load the component directly from a CDN:',
+        code: '<script type="module" src="https://cdn.jsdelivr.net/npm/@metaory/iconify-picker/dist/iconify-picker.js"></script>',
+        language: 'html'
+      }
+    ]
+  },
+  {
+    title: 'Direct Download',
+    steps: [
+      {
+        description: 'Download <a href="https://github.com/metaory/iconify-picker/releases/latest" target="_blank">the latest release</a> and include it in your project.',
+        hasCode: false
+      }
+    ]
+  }
+];
+---
+
+<Section id="installation" title="Installation">
+  <p>You can install Iconify Picker in several ways:</p>
+  
+  {installMethods.map((method, index) => (
+    <div class="install-method">
+      <h3>{index + 1}. {method.title}</h3>
+      {method.steps.map(step => (
+        <>
+          <p>{step.description}</p>
+          {step.hasCode !== false && <CodeBlock code={step.code} lang={step.language} />}
+        </>
+      ))}
+    </div>
+  ))}
+</Section>
+
+<style>
+.install-options {
+  display: grid;
+  gap: var(--s3);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--s0);
+}
+
+.install-method {
+  margin-bottom: var(--s3);
+}
+
+.install-method h3 {
+  margin-top: 0;
+  margin-bottom: var(--s2);
+}
+</style> 

@@ -14,7 +14,7 @@ A zero-dependency, framework-agnostic icon picker web component powered by Iconi
 
 Visit our [documentation site](https://yourusername.github.io/iconify-picker/) for detailed usage instructions and examples.
 
-Here’s a **README template** for an **Autonomous Mode Component**—tailored to your standards. It emphasizes declarative usage, minimalism, browser-native behavior, and styling flexibility.
+Here's a **README template** for an **Autonomous Mode Component**—tailored to your standards. It emphasizes declarative usage, minimalism, browser-native behavior, and styling flexibility.
 
 # `<iconify-picker>`
 
@@ -77,20 +77,26 @@ npm install iconify-picker
 | `collection`  | Iconify collection ID (e.g. `mdi`, `lucide`) |
 | `mode`        | `inline` (default), `button`, `manual`       |
 | `button-label`| Label for button (in `button` mode)          |
-| `theme`       | Optional: `light`, `dark`, or custom         |
+| `theme`       | `light`, `dark`, or `auto` (default)         |
 | `filter`      | Initial filter query                         |
+| `page-size`   | Number of icons per page                     |
+| `selected`    | Pre-selected icon (format: `collection:name`)|
+| `height`      | Component height                             |
+| `hidden`      | Hide the component                           |
 
 ---
 
 ## Events
 
-| Event            | Detail Payload                          |
-|------------------|-----------------------------------------|
-| `icon-selected`  | `{ name, collection, category }`        |
+| Event            | Detail Payload                                 |
+|------------------|-----------------------------------------------|
+| `icon-selected`  | `{ iconName, collection, name, svg }`          |
+| `change`         | Same as `icon-selected`                        |
 
 ```js
 picker.addEventListener('icon-selected', (e) => {
-  console.log(e.detail.name);
+  console.log(e.detail.iconName); // e.g. "mdi:home"
+  console.log(e.detail.svg);      // Raw SVG content
 });
 ```
 
@@ -110,29 +116,138 @@ picker.addEventListener('icon-selected', (e) => {
 
 ## Styling
 
-Customize with CSS custom properties:
+Customize with CSS custom properties. All properties are categorized below:
 
-```html
-<iconify-picker
-  collection="mdi"
-  style="
-    --picker-bg: #111;
-    --picker-color: #eee;
-    --picker-icon-size: 32px;
-    --picker-accent: hotpink;
-    --picker-radius: 8px;
-  "
-></iconify-picker>
-```
+### Main Colors
 
-### Exposed Parts (for `::part()`)
+| Property               | Default   | Description                 |
+|------------------------|-----------|------------------------------|
+| `--picker-primary`     | `#e74c3c` | Primary accent color         |
+| `--picker-bg`          | `#f0f8ff` | Main background color        |
+| `--picker-text`        | `#2c3e50` | Main text color              |
+| `--picker-border`      | `#c0d6e4` | Border color                 |
+| `--picker-hover`       | `#e1f0ff` | Hover state background       |
+
+### Element-Specific Colors
+
+| Property               | Default    | Description                  |
+|------------------------|------------|------------------------------|
+| `--picker-header-bg`   | `#e8f4ff`  | Header background color      |
+| `--picker-input-bg`    | `#ffffff`  | Input fields background      |
+| `--picker-input-text`  | `#2c3e50`  | Input fields text color      |
+| `--picker-icon-color`  | `#2c3e50`  | Icon color                   |
+| `--picker-footer-bg`   | `#e8f4ff`  | Footer background color      |
+
+### Border Radius
+
+| Property                    | Default | Description                       |
+|-----------------------------|---------|-----------------------------------|
+| `--picker-radius`           | `12px`  | Default border radius             |
+| `--picker-container-radius` | `12px`  | Border radius for main container  |
+| `--picker-input-radius`     | `8px`   | Border radius for inputs          |
+| `--picker-icon-radius`      | `6px`   | Border radius for icons           |
+| `--picker-button-radius`    | `8px`   | Border radius for buttons         |
+
+### Border Width
+
+| Property                         | Default | Description                      |
+|----------------------------------|---------|----------------------------------|
+| `--picker-border-width`          | `3px`   | Default border width             |
+| `--picker-container-border-width`| `3px`   | Border width for container       |
+| `--picker-input-border-width`    | `1px`   | Border width for inputs          |
+| `--picker-icon-border-width`     | `1px`   | Border width for icons           |
+
+### Spacing and Dimensions
+
+| Property               | Default  | Description                    |
+|------------------------|----------|--------------------------------|
+| `--picker-padding`     | `1rem`   | Internal padding for elements  |
+| `--picker-gap`         | `0.5rem` | Gap between elements           |
+| `--picker-icon-size`   | `24px`   | Size of icons in the grid      |
+| `--picker-max-height`  | `60vh`   | Maximum height of component    |
+
+### Scrollbar Customization
+
+| Property                    | Default      | Description                 |
+|-----------------------------|--------------|------------------------------|
+| `--picker-scrollbar-width`  | `thin`       | Scrollbar width              |
+| `--picker-scrollbar-color`  | `#e74c3c`    | Scrollbar thumb color        |
+| `--picker-scrollbar-track`  | `transparent`| Scrollbar track background   |
+| `--picker-scrollbar-hover`  | `#ff9b92`    | Scrollbar thumb hover color  |
+
+### Styling Example
 
 ```css
-iconify-picker::part(button) {
-  padding: 0.5rem 1rem;
-  background: var(--picker-accent);
+iconify-picker {
+  /* Main colors */
+  --picker-primary: #3498db;
+  --picker-bg: #f8f9fa;
+  --picker-text: #2c3e50;
+  
+  /* Element-specific colors */
+  --picker-header-bg: #edf2f7;
+  --picker-input-bg: #ffffff;
+  --picker-footer-bg: #edf2f7;
+  
+  /* Border and shape */
+  --picker-container-radius: 16px;
+  --picker-input-radius: 8px;
+  --picker-icon-radius: 4px;
+  
+  /* Sizing */
+  --picker-icon-size: 28px;
+  --picker-padding: 12px;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  iconify-picker {
+    --picker-bg: #1a2333;
+    --picker-text: #ecf0f1;
+    --picker-border: #2c3e50;
+    --picker-header-bg: #192230;
+    --picker-input-bg: #253545;
+    --picker-input-text: #ecf0f1;
+  }
 }
 ```
+
+### Shadow Parts for Advanced Styling
+
+The component exposes shadow parts for advanced styling using the `::part()` selector:
+
+```css
+/* Style the container */
+iconify-picker::part(container) {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the search input */
+iconify-picker::part(search) {
+  border-color: purple;
+}
+
+/* Style the icons */
+iconify-picker::part(icon) {
+  transition: transform 0.2s;
+}
+
+iconify-picker::part(icon):hover {
+  transform: scale(1.1);
+}
+```
+
+Available parts:
+- `container` - Main component container
+- `header` - Top section with search and collection selector
+- `footer` - Bottom section with pagination
+- `search` - Search input
+- `select` - Collection dropdown
+- `grid` - Icon grid container
+- `icon` - Individual icon item
+- `icon-image` - The icon SVG/image itself
+- `button` - Navigation buttons
+- `pagination` - Pagination controls
 
 ---
 
@@ -146,7 +261,6 @@ This component follows the **Autonomous Mode** pattern:
 - No framework, no setup required
 
 ---
-
 
 ## Development
 

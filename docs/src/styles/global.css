@@ -1,0 +1,291 @@
+  /*
+  #c96fa3
+  #956fc9
+  #c96f76
+  */
+
+:root {
+  /* Base Colors */
+  --pri: #EE6655;
+  --sec: #EE5577;
+  --acc: #5544EE;
+
+  /* Hue Values */
+  --h-pri: 260;
+  --h-sec: 330;
+  --h-acc: 10;
+
+  /* Neutrals */
+  --wht: #ffffff;
+  --blk: #000000;
+
+  /* UI Surfaces */
+  --bg: hsl(var(--h-pri) 30% 96% / 0.6); /* main background */
+  --bg1: hsl(var(--h-sec) 25% 90% / 0.6); /* surface 1 */
+  --bg2: hsl(var(--h-acc) 20% 84% / 0.6); /* surface 2 */
+
+  /* Text */
+  --tx0: hsl(var(--h-pri) 25% 30%); /* primary text */
+  --tx1: hsl(var(--h-sec) 25% 30%); /* secondary text */
+
+  /* UI Elements */
+  --bdr: hsl(var(--h-pri) 25% 85%);
+  --btn: var(--pri);
+  --btx: var(--wht);
+  /* button text */
+  --lnk: var(--pri);
+  --fcs: var(--acc); /* focus ring */
+
+  /* Radius */
+  --r0: 0.8rem; /* default radius */
+  --r1: 0.25rem; /* small radius */
+  --r2: 1rem; /* large radius */
+
+  /* Width */
+  --w0: 100%; /* default width */
+  --wx: 64ch; /* max width */
+
+  /* Heights */
+  --h0: 2.5rem; /* control height */
+  --h1: 4.0rem; /* nav height */
+  --hi: 1.25rem; /* icon size */
+
+  /* Spacing */
+  --s0: 1rem; /* base spacing unit */
+  --s1: 0.25rem; /* xs spacing */
+  --s2: 0.5rem; /* sm spacing */
+  --s3: 1.5rem; /* lg spacing */
+  --s4: 2rem; /* xl spacing */
+  --gap: var(--s0); /* grid gap */
+  
+  /* Layout & Component */
+  --w-sb: calc(var(--s4) * 6.25); /* sidebar width */
+  --g-head: auto 1fr auto; /* header grid */
+  --g-main: 2; /* main content grid column */
+  --fs-h1: 2.8rem; /* title size */
+  --fs-h2: 2rem; /* subtitle size */
+  --fs-h3: 1.2rem; /* menu size */
+  --w-max: var(--wx); /* container max width */
+  --mob: 0; /* mobile flag */
+  --d-sb: block; /* sidebar display */
+  --g-cols: 3; /* grid columns */
+  --f-dir: row; /* flex direction */
+  --d: block; /* default display */
+  --d-n: none; /* hidden display */
+  --h-resp: 70vh; /* responsive height */
+  --f-inv: invert(0); /* canvas filter */
+}
+
+/* Mobile breakpoint */
+@media (max-width: 768px) {
+  :root {
+    --mob: 1;
+    --g-main: auto;
+    --d-sb: var(--d-n);
+    --g-cols: 1;
+    --f-dir: column;
+    --d: var(--d-n);
+    --d-n: block;
+    --h-resp: 50vh;
+  }
+}
+
+html.dark {
+  --bg0: hsl(var(--h-pri) 12% 12%);
+  --bg1: hsl(var(--h-pri) 12% 15%);
+  --bg2: hsl(var(--h-pri) 12% 18%);
+  --tx0: hsl(var(--h-pri) 18% 92%);
+  --tx1: hsl(var(--h-pri) 10% 65%);
+  --bdr: hsl(var(--h-pri) 20% 30%);
+  --lnk: hsl(var(--h-pri) 80% 70%);
+  --f-inv: invert(1);
+}
+
+* {
+  box-sizing: border-box;
+  font-family: var(--font-krypton), system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: var(--w0);
+  position: relative;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-krypton), system-ui, sans-serif;
+  line-height: 1.6;
+  color: var(--tx0);
+  background-color: var(--bg0);
+  transition: color 0.3s, background-color 0.3s;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: calc(var(--s4) * 1.4);
+  font-family: var(--font-bungee);
+}
+
+h2 {
+  font-family: var(--font-bungee);
+  font-size: var(--s4);
+}
+
+h3 {
+  font-family: var(--font-blackout-midnight);
+  font-size: calc(var(--s0) * 1.2);
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: calc(var(--s3) * 1.2);
+  }
+
+  h2 {
+    font-size: var(--s0);
+  }
+
+  h3 {
+    font-size: calc(var(--s2) * 1.2);
+  }
+}
+
+a {
+  color: var(--lnk);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--pri);
+}
+
+/* Components */
+.btn,
+button {
+  background-color: var(--btn);
+  color: var(--btx);
+  border: none;
+  border-radius: var(--r0);
+  padding: var(--s1) var(--s0);
+  cursor: pointer;
+}
+
+table code {
+  font-family: monospace;
+  background-color: var(--bg2);
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r1);
+}
+
+/* Theme notification */
+.theme-notification {
+  position: fixed;
+  bottom: var(--s4);
+  right: var(--s4);
+  padding: var(--s2) var(--s3);
+  border-radius: var(--r1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+
+.theme-notification.dark {
+  background: var(--wht);
+  color: var(--blk);
+}
+
+.theme-notification.light {
+  background: var(--blk);
+  color: var(--wht);
+}
+
+.theme-notification.fade-out {
+  opacity: 0;
+}
+
+/* Layout utilities */
+.container {
+  width: var(--w0);
+  max-width: var(--wx);
+  margin: 0 auto;
+  padding: 0 var(--s0);
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.text-wrap {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Responsive helpers */
+.desktop-only {
+  display: var(--d);
+}
+
+.mobile-only {
+  display: var(--d-n);
+}
+
+/* Media handling */
+img,
+pre,
+code,
+table,
+iframe,
+embed,
+object,
+video {
+  max-width: var(--w0);
+}
+
+pre,
+table,
+iframe,
+embed,
+object,
+video {
+  overflow-x: auto;
+}
+
+canvas {
+  filter: var(--f-inv);
+}
+
+/* Modern scrollbar styles */
+::-webkit-scrollbar {
+  width: calc(var(--s2) * 0.75);
+  height: calc(var(--s2) * 0.75);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--acc);
+  border-radius: var(--r0);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pri);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--acc) transparent;
+}
