@@ -2,18 +2,20 @@
   "name": "iconify-picker",
   "version": "0.2.0",
   "type": "module",
-  "description": "Zero-dependency icon picker with built-in UI modes and native events",
+  "description": "Zero-dependency icon picker web component powered by Iconify",
   "files": [
-    "lib/iconify-picker.js",
-    "README.md",
-    "LICENSE"
+    "lib"
   ],
   "main": "lib/iconify-picker.js",
+  "module": "lib/iconify-picker.js",
+  "browser": "lib/iconify-picker.js",
   "exports": {
-    ".": "./lib/iconify-picker.js"
+    ".": {
+      "import": "./lib/iconify-picker.js",
+      "default": "./lib/iconify-picker.js"
+    }
   },
-  "scripts": {
-  },
+  "sideEffects": true,
   "keywords":[
     "iconify",
     "icons",
