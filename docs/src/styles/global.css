@@ -1,4 +1,4 @@
-  /*
+/*
   #c96fa3
   #956fc9
   #c96f76
@@ -6,9 +6,9 @@
 
 :root {
   /* Base Colors */
-  --pri: #EE6655;
-  --sec: #EE5577;
-  --acc: #5544EE;
+  --pri: #ee6655;
+  --sec: #ee5577;
+  --acc: #5544ee;
 
   /* Hue Values */
   --h-pri: 260;
@@ -47,7 +47,7 @@
 
   /* Heights */
   --h0: 2.5rem; /* control height */
-  --h1: 4.0rem; /* nav height */
+  --h1: 4rem; /* nav height */
   --hi: 1.25rem; /* icon size */
 
   /* Spacing */
@@ -57,7 +57,7 @@
   --s3: 1.5rem; /* lg spacing */
   --s4: 2rem; /* xl spacing */
   --gap: var(--s0); /* grid gap */
-  
+
   /* Layout & Component */
   --w-sb: calc(var(--s4) * 6.25); /* sidebar width */
   --g-head: auto 1fr auto; /* header grid */
@@ -91,14 +91,14 @@
 }
 
 html.dark {
-  --bg0: hsl(var(--h-pri) 12% 12%);
-  --bg1: hsl(var(--h-pri) 12% 15%);
-  --bg2: hsl(var(--h-pri) 12% 18%);
+  --bg0: hsl(var(--h-pri) 12% 12% / 60%);
+  --bg1: hsl(var(--h-pri) 12% 15% / 60%);
+  --bg2: hsl(var(--h-pri) 12% 18% / 60%);
   --tx0: hsl(var(--h-pri) 18% 92%);
   --tx1: hsl(var(--h-pri) 10% 65%);
   --bdr: hsl(var(--h-pri) 20% 30%);
   --lnk: hsl(var(--h-pri) 80% 70%);
-  --f-inv: invert(1);
+  --f-inv: invert(1) brightness(0.6);
 }
 
 * {
@@ -122,7 +122,9 @@ body {
   line-height: 1.6;
   color: var(--tx0);
   background-color: var(--bg0);
-  transition: color 0.3s, background-color 0.3s;
+  transition:
+    color 0.3s,
+    background-color 0.3s;
   min-height: 100vh;
 }
 
@@ -289,3 +291,4 @@ canvas {
   scrollbar-width: thin;
   scrollbar-color: var(--acc) transparent;
 }
+
