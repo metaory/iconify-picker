@@ -1,6 +1,6 @@
 {
   "name": "iconify-picker",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "type": "module",
   "description": "Zero-dependency icon picker with built-in UI modes and native events",
   "files": [

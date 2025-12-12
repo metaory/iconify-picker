@@ -3,20 +3,32 @@ import { Code } from 'astro:components';
 import Section from '../ui/Section.astro';
 import CodeBlock from '../ui/CodeBlock.astro';
 import Card from '../ui/Card.astro';
-import EventLog from '../ui/EventLog.astro';
 
 const eventListenerCode = `
-// Add event listener
-document.querySelector('iconify-picker')
-  .addEventListener('iconify-select', (e) => {
-    console.log('Selected icon:', e.detail.name);
-  });
+picker.addEventListener('icon-selected', (e) => {
+  console.log('Icon:', e.detail.iconName)
+  console.log('Collection:', e.detail.collection)
+  console.log('Name:', e.detail.name)
+  console.log('SVG:', e.detail.svg)
+})
+
+// Also fires 'change' event with same detail
+picker.addEventListener('change', (e) => {
+  console.log('Changed to:', e.detail.iconName)
+})
 `;
 
 const eventsTable = [
-  { name: 'iconify-select', detail: '{ name: string, collection: string }', description: 'Fired when an icon is selected' },
-  { name: 'iconify-dialog-open', detail: 'none', description: 'Fired when the picker dialog opens' },
-  { name: 'iconify-dialog-close', detail: 'none', description: 'Fired when the picker dialog closes' }
+  { 
+    name: 'icon-selected', 
+    detail: '{ iconName, collection, name, svg }', 
+    description: 'Fired when an icon is selected' 
+  },
+  { 
+    name: 'change', 
+    detail: '{ iconName, collection, name, svg }', 
+    description: 'Same as icon-selected, for form compatibility' 
+  }
 ];
 
 const demoConfig = {
@@ -62,7 +74,7 @@ const demoConfig = {
       <div id={demoConfig.eventTargetId} class="icon-container">
         <p class="placeholder">{demoConfig.placeholder}</p>
       </div>
-      <iconify-picker id={demoConfig.pickerId} mode={demoConfig.pickerMode}></iconify-picker>
+      <iconify-picker id={demoConfig.pickerId} mode={demoConfig.pickerMode} button-label="Pick Icon"></iconify-picker>
       <div id={demoConfig.eventLogId} class="event-log">
         <div class="event-log-header">Event Log</div>
         <div class="event-log-content"></div>
@@ -73,44 +85,40 @@ const demoConfig = {
 
 <script define:vars={{ demoConfig }}>
   document.addEventListener('DOMContentLoaded', () => {
-    const picker = document.getElementById(demoConfig.pickerId);
-    const iconContainer = document.getElementById(demoConfig.eventTargetId);
-    const eventLog = document.querySelector('.event-log-content');
+    const picker = document.getElementById(demoConfig.pickerId)
+    const iconContainer = document.getElementById(demoConfig.eventTargetId)
+    const eventLog = document.querySelector('.event-log-content')
     
-    if (!picker || !iconContainer || !eventLog) return;
+    if (!picker || !iconContainer || !eventLog) return
     
     const logEvent = (name, detail = {}) => {
-      const entry = document.createElement('div');
-      entry.className = 'event-entry';
+      const entry = document.createElement('div')
+      entry.className = 'event-entry'
+      const detailStr = Object.entries(detail)
+        .filter(([k]) => k !== 'svg')
+        .map(([k, v]) => `${k}: ${v}`)
+        .join(', ')
       entry.innerHTML = `
-        <div class="event-name">${name}</div>
-        <div class="event-detail">${JSON.stringify(detail)}</div>
-        <div class="event-time">${new Date().toLocaleTimeString()}</div>
-      `;
-      eventLog.prepend(entry);
+        <span class="event-name">${name}</span>
+        <span class="event-detail">${detailStr}</span>
+        <span class="event-time">${new Date().toLocaleTimeString()}</span>
+      `
+      eventLog.prepend(entry)
       
       // Limit to 5 entries
-      if (eventLog.children.length > 5) {
-        eventLog.removeChild(eventLog.lastChild);
-      }
-    };
+      while (eventLog.children.length > 5) eventLog.lastChild.remove()
+    }
     
-    picker.addEventListener('iconify-select', (e) => {
-      const icon = e.detail.name;
-      const collection = e.detail.collection;
-      
-      iconContainer.innerHTML = `<iconify-icon icon="${collection}:${icon}"></iconify-icon>`;
-      logEvent('iconify-select', e.detail);
-    });
+    picker.addEventListener('icon-selected', (e) => {
+      const { iconName, collection, name } = e.detail
+      iconContainer.innerHTML = `<img src="https://api.iconify.design/${collection}/${name}.svg?height=48" alt="${iconName}">`
+      logEvent('icon-selected', e.detail)
+    })
     
-    picker.addEventListener('iconify-dialog-open', () => {
-      logEvent('iconify-dialog-open');
-    });
-    
-    picker.addEventListener('iconify-dialog-close', () => {
-      logEvent('iconify-dialog-close');
-    });
-  });
+    picker.addEventListener('change', (e) => {
+      logEvent('change', e.detail)
+    })
+  })
 </script>
 
 <style>
@@ -121,18 +129,24 @@ const demoConfig = {
 }
 
 .icon-container {
-  height: 64px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px dashed var(--bdr);
+  border: 2px dashed var(--bdr);
   border-radius: var(--r0);
   background: var(--bg1);
+}
+
+.icon-container img {
+  width: 48px;
+  height: 48px;
 }
 
 .placeholder {
   color: var(--tx1);
   font-style: italic;
+  opacity: 0.6;
 }
 
 .event-log {
@@ -146,10 +160,11 @@ const demoConfig = {
   color: white;
   padding: var(--s1) var(--s0);
   font-weight: bold;
+  font-size: 0.85rem;
 }
 
 .event-log-content {
-  max-height: 200px;
+  max-height: 160px;
   overflow-y: auto;
 }
 
@@ -157,8 +172,8 @@ const demoConfig = {
   padding: var(--s1) var(--s0);
   border-bottom: 1px solid var(--bdr);
   font-family: monospace;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  font-size: 0.8rem;
+  display: flex;
   gap: var(--s2);
   align-items: center;
 }
@@ -166,10 +181,20 @@ const demoConfig = {
 .event-name {
   font-weight: bold;
   color: var(--pri);
+  min-width: 100px;
+}
+
+.event-detail {
+  flex: 1;
+  opacity: 0.8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .event-time {
   color: var(--tx1);
-  font-size: 0.8em;
+  font-size: 0.75rem;
+  opacity: 0.6;
 }
-</style> 
+</style>

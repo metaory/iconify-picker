@@ -12,18 +12,18 @@ const {
 ---
 
 <div class="picker-container">
+  {mode === 'manual' && 
+    <button id={`${id}-trigger`} class="manual-trigger">Open Picker</button>
+  }
   <iconify-picker 
     id={id} 
     mode={mode === 'inline' ? undefined : mode}
     collection={collection}
     theme="auto"
     page-size="30"
-    button-label={mode === 'button' ? 'Select Icon' : undefined}>
+    button-label={mode === 'button' ? 'Select Icon' : undefined}
+    hidden={mode === 'manual' ? true : undefined}>
   </iconify-picker>
-  
-  {mode === 'manual' && 
-    <button id={`${id}-trigger`} class="manual-trigger">Open Picker</button>
-  }
 </div>
 
 <style>
