@@ -7,13 +7,18 @@ const installMethods = [
     title: 'NPM Package',
     steps: [
       {
-        description: 'Install the package:',
-        code: 'npm install @metaory/iconify-picker',
+        description: 'Install the package using npm:',
+        code: 'npm install iconify-picker',
         language: 'bash'
       },
       {
-        description: 'Then import it in your HTML:',
-        code: '<script type="module" src="node_modules/@metaory/iconify-picker/dist/iconify-picker.js"></script>',
+        description: 'Import it in your JavaScript:',
+        code: "import IconifyPicker from 'iconify-picker';",
+        language: 'javascript'
+      },
+      {
+        description: 'Or use it directly in HTML with a script tag:',
+        code: '<script type="module" src="./node_modules/iconify-picker/lib/iconify-picker.js"></script>',
         language: 'html'
       }
     ]
@@ -22,18 +27,9 @@ const installMethods = [
     title: 'CDN',
     steps: [
       {
-        description: 'You can also load the component directly from a CDN:',
-        code: '<script type="module" src="https://cdn.jsdelivr.net/npm/@metaory/iconify-picker/dist/iconify-picker.js"></script>',
+        description: 'Alternatively, you can load the component directly from a CDN:',
+        code: '<script type="module" src="https://cdn.jsdelivr.net/npm/iconify-picker/lib/iconify-picker.js"></script>',
         language: 'html'
-      }
-    ]
-  },
-  {
-    title: 'Direct Download',
-    steps: [
-      {
-        description: 'Download <a href="https://github.com/metaory/iconify-picker/releases/latest" target="_blank">the latest release</a> and include it in your project.',
-        hasCode: false
       }
     ]
   }
@@ -41,7 +37,7 @@ const installMethods = [
 ---
 
 <Section id="installation" title="Installation">
-  <p>You can install Iconify Picker in several ways:</p>
+  <p>Install Iconify Picker using npm (recommended) or via CDN:</p>
   
   {installMethods.map((method, index) => (
     <div class="install-method">
@@ -49,7 +45,7 @@ const installMethods = [
       {method.steps.map(step => (
         <>
           <p>{step.description}</p>
-          {step.hasCode !== false && <CodeBlock code={step.code} lang={step.language} />}
+          <CodeBlock code={step.code} lang={step.language} />
         </>
       ))}
     </div>
@@ -57,13 +53,6 @@ const installMethods = [
 </Section>
 
 <style>
-.install-options {
-  display: grid;
-  gap: var(--s3);
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--s0);
-}
-
 .install-method {
   margin-bottom: var(--s3);
 }

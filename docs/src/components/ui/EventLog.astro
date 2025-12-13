@@ -1,9 +1,10 @@
 ---
 interface Props {
   id: string;
+  pickerIds?: string[];
 }
 
-const { id } = Astro.props;
+const { id, pickerIds } = Astro.props;
 ---
 
 <div id={id} class="event-log">
@@ -41,49 +42,80 @@ const { id } = Astro.props;
 
 .log-content {
   padding: var(--s2) var(--s0);
-  max-height: 150px;
+  max-height: 200px;
   overflow-y: auto;
-  font-family: monospace;
-  font-size: 0.9rem;
   display: grid;
   gap: var(--s1);
   align-content: start;
 }
 
 .log-entry {
-  padding-bottom: var(--s1);
-  border-bottom: 1px dashed var(--bdr);
+  margin: 0;
 }
 
-.log-entry:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+.log-entry :global(pre) {
+  margin: 0;
+  padding: var(--s1);
+  border-radius: var(--r1);
+  border: 1px solid var(--bdr);
+  background: var(--bg0);
+  font-size: 0.85rem;
+  overflow-x: auto;
+}
+
+.log-entry :global(pre code) {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  display: block;
 }
 </style>
 
-<script>
+<script define:vars={{ pickerIds }}>
 document.addEventListener('DOMContentLoaded', () => {
   const logContainers = document.querySelectorAll('.event-log');
   
   logContainers.forEach(container => {
     const logContent = container.querySelector('.log-content');
     const clearBtn = container.querySelector('.clear-log');
-    const id = container.id.replace('-log', '');
-    const picker = document.getElementById(id);
     
-    if (!logContent || !picker) return;
+    if (!logContent) return;
     
     const logEvent = (event) => {
       const entry = document.createElement('div');
       entry.className = 'log-entry';
-      entry.textContent = `${event.type}: ${JSON.stringify(event.detail || {})}`;
+      const detail = { ...event.detail };
+      delete detail.svg;
+      const eventData = {
+        type: event.type,
+        ...detail
+      };
+      const formattedJson = JSON.stringify(eventData, null, 2);
+      const code = document.createElement('code');
+      code.textContent = formattedJson;
+      const pre = document.createElement('pre');
+      pre.appendChild(code);
+      entry.appendChild(pre);
       logContent.appendChild(entry);
       logContent.scrollTop = logContent.scrollHeight;
     };
     
-    // Listen for events
-    picker.addEventListener('icon-selected', logEvent);
-    picker.addEventListener('change', logEvent);
+    // If pickerIds are provided, listen to all of them
+    if (pickerIds && pickerIds.length > 0) {
+      pickerIds.forEach(pickerId => {
+        const picker = document.getElementById(pickerId);
+        if (picker) {
+          picker.addEventListener('icon-selected', logEvent);
+          picker.addEventListener('change', logEvent);
+        }
+      });
+    } else {
+      // Fallback to original behavior: try to find picker by removing '-log' from id
+      const id = container.id.replace('-log', '');
+      const picker = document.getElementById(id);
+      if (picker) {
+        picker.addEventListener('icon-selected', logEvent);
+        picker.addEventListener('change', logEvent);
+      }
+    }
     
     // Clear log
     clearBtn?.addEventListener('click', () => {

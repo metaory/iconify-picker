@@ -1,0 +1,94 @@
+---
+import Section from '../ui/Section.astro'
+import CodeBlock from '../ui/CodeBlock.astro'
+---
+
+<Section id="react" title="React Usage">
+  <p>Use Iconify Picker in your React components:</p>
+  
+  <CodeBlock code={`import { useEffect, useRef } from 'react';
+import IconifyPicker from 'iconify-picker';
+
+function MyComponent() {
+  const pickerRef = useRef(null);
+
+  useEffect(() => {
+    const picker = pickerRef.current;
+    if (picker) {
+      picker.addEventListener('icon-selected', (e) => {
+        console.log('Selected:', e.detail.iconName);
+      });
+    }
+  }, []);
+
+  return (
+    <iconify-picker
+      ref={pickerRef}
+      collection="mdi"
+      mode="button"
+      button-label="Choose Icon"
+    />
+  );
+}`} lang="jsx" />
+</Section>
+
+<Section id="vue" title="Vue Usage">
+  <p>Use Iconify Picker in your Vue components:</p>
+  
+  <CodeBlock code={`<template>
+  <iconify-picker
+    ref="pickerRef"
+    collection="mdi"
+    mode="button"
+    button-label="Choose Icon"
+    @icon-selected="handleIconSelected"
+  />
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import IconifyPicker from 'iconify-picker';
+
+const pickerRef = ref(null);
+
+const handleIconSelected = (e) => {
+  console.log('Selected:', e.detail.iconName);
+};
+
+onMounted(() => {
+  // Component is ready
+});
+</script>`} lang="vue" />
+</Section>
+
+<Section id="angular" title="Angular Usage">
+  <p>Use Iconify Picker in your Angular components:</p>
+  
+  <CodeBlock code={`import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import IconifyPicker from 'iconify-picker';
+
+@Component({
+  selector: 'app-icon-picker',
+  template: \`
+    <iconify-picker
+      #pickerRef
+      collection="mdi"
+      mode="button"
+      button-label="Choose Icon"
+      (icon-selected)="handleIconSelected($event)"
+    ></iconify-picker>
+  \`
+})
+export class IconPickerComponent implements AfterViewInit {
+  @ViewChild('pickerRef', { static: false }) pickerRef!: ElementRef<IconifyPicker>;
+
+  ngAfterViewInit() {
+    // Component is ready
+  }
+
+  handleIconSelected(event: CustomEvent) {
+    console.log('Selected:', event.detail.iconName);
+  }
+}`} lang="typescript" />
+</Section>
+

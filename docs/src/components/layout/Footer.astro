@@ -1,20 +1,23 @@
 ---
 // Footer.astro - Site footer component
+import packageJson from '../../../../package.json'
+
+const version = packageJson.version
+const packageName = packageJson.name
 ---
 
 <footer class="footer">
   <div class="container">
-    <p>&copy; <script is:inline>document.write(new Date().getFullYear())</script> Iconify Picker</p>
+    <p>made by <a href="https://github.com/metaory" target="_blank" rel="noopener noreferrer">metaory</a> with &lt;3</p>
+    <code>{packageName}@{version}</code>
   </div>
 </footer>
 
 <style>
 .footer {
   border-top: 1px solid var(--pri);
-  padding: var(--s3) 0;
   text-align: center;
   color: var(--tx1);
-  background-color: var(--bg1);
   width: var(--w0);
   grid-column: 1 / -1;
 }
@@ -22,4 +25,27 @@
 .container {
   padding: 0 var(--s0);
 }
-</style> 
+
+.footer a {
+  color: var(--pri);
+  text-shadow: 0 0 6px currentColor;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+
+.footer code {
+  color: var(--tx1);
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  margin: var(--s1) auto 0;
+  padding: var(--s1) var(--s2);
+  background: var(--bg0);
+  border-radius: var(--r0);
+  display: inline-block;
+  font-size: 0.9em;
+}
+</style>

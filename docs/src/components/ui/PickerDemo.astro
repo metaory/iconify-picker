@@ -4,25 +4,25 @@ interface Props {
   id?: string;
   collection?: string;
 }
-const { 
-  mode, 
-  id = `${mode}-mode-picker`, 
-  collection = 'mdi' 
+const {
+  mode,
+  id = `${mode}-mode-picker`,
+  collection = 'mdi'
 } = Astro.props;
 ---
 
 <div class="picker-container">
-  {mode === 'manual' && 
+  {mode === 'manual' &&
     <button id={`${id}-trigger`} class="manual-trigger">Open Picker</button>
   }
-  <iconify-picker 
-    id={id} 
+  <iconify-picker
+    id={id}
     mode={mode === 'inline' ? undefined : mode}
     collection={collection}
     theme="auto"
     page-size="30"
     button-label={mode === 'button' ? 'Select Icon' : undefined}
-    hidden={mode === 'manual' ? true : undefined}>
+    hidden={mode === 'manual' || mode === 'button' ? true : undefined}>
   </iconify-picker>
 </div>
 
@@ -46,20 +46,20 @@ const {
   color: var(--wht);
   padding: var(--s2) var(--s3);
   border: none;
-  border-radius: var(--r0);
+  border-radius: 10px;
   cursor: pointer;
 }
 </style>
 
-{mode === 'manual' && 
+{mode === 'manual' &&
   <script define:vars={{ id }}>
     document.addEventListener('DOMContentLoaded', () => {
       const picker = document.getElementById(id);
       const trigger = document.getElementById(`${id}-trigger`);
-      
+
       trigger?.addEventListener('click', () => {
         picker?.toggle();
       });
     });
   </script>
-} 
+}

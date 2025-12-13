@@ -65,44 +65,50 @@ const { tabs, contentId = 'tab-content' } = Astro.props;
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const tabsContainers = document.querySelectorAll('.tabs-container');
-  
-  tabsContainers.forEach(container => {
+  const activateTab = (container, tabId) => {
     const tabs = container.querySelectorAll('.tab-nav button');
-    const contentId = container.querySelector('.tab-content').id;
-    const sections = document.querySelectorAll(`[data-content="${contentId}"]`);
+    const contentId = container.querySelector('.tab-content')?.id;
+    if (!contentId) return;
     
-    // Show first tab content by default
-    if (sections.length > 0) {
-      const firstTab = tabs[0];
+    const targetTab = Array.from(tabs as NodeListOf<HTMLElement>).find(t => t.getAttribute('data-tab') === tabId);
+    const sections = container.querySelectorAll(`[data-content="${contentId}"]`);
+    const targetSection = Array.from(sections as NodeListOf<HTMLElement>).find(s => s.id === tabId);
+    if (!targetTab || !targetSection) return;
+    
+    tabs.forEach(t => t.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+    
+    targetTab.classList.add('active');
+    targetSection.classList.add('active');
+  };
+  
+  const initTabs = (container) => {
+    const tabs = container.querySelectorAll('.tab-nav button');
+    const contentId = container.querySelector('.tab-content')?.id;
+    if (!contentId) return;
+    
+    const sections = container.querySelectorAll(`[data-content="${contentId}"]`);
+    sections.forEach(s => s.classList.remove('active'));
+    
+    const firstTab = tabs[0];
+    if (firstTab && sections.length) {
       const firstTabId = firstTab.getAttribute('data-tab');
-      const firstSection = document.getElementById(firstTabId);
-      
+      const firstSection = firstTabId ? Array.from(sections as NodeListOf<HTMLElement>).find(s => s.id === firstTabId) : null;
       if (firstSection) {
         firstSection.classList.add('active');
+        firstTab.classList.add('active');
       }
     }
     
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        // Deactivate all tabs
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        
         const tabId = tab.getAttribute('data-tab');
-        
-        // Hide all sections
-        sections.forEach(section => {
-          section.classList.remove('active');
-        });
-        
-        // Show selected section
-        const activeSection = document.getElementById(tabId);
-        if (activeSection) {
-          activeSection.classList.add('active');
-        }
+        if (!tabId) return;
+        activateTab(container, tabId);
       });
     });
-  });
+  };
+  
+  document.querySelectorAll('.tabs-container').forEach(initTabs);
 });
 </script> 

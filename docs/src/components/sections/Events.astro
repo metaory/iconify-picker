@@ -1,8 +1,6 @@
 ---
-import { Code } from 'astro:components';
 import Section from '../ui/Section.astro';
 import CodeBlock from '../ui/CodeBlock.astro';
-import Card from '../ui/Card.astro';
 
 const eventListenerCode = `
 picker.addEventListener('icon-selected', (e) => {
@@ -30,16 +28,6 @@ const eventsTable = [
     description: 'Same as icon-selected, for form compatibility' 
   }
 ];
-
-const demoConfig = {
-  title: 'Event Handling Demo',
-  variant: 'example',
-  pickerId: 'event-demo-picker',
-  pickerMode: 'button',
-  eventTargetId: 'event-target',
-  eventLogId: 'event-log',
-  placeholder: 'Select an icon to see events'
-};
 ---
 
 <Section id="events" title="Events">
@@ -68,133 +56,4 @@ const demoConfig = {
 
   <h3>Example</h3>
   <CodeBlock code={eventListenerCode} lang="js" />
-  
-  <Card title={demoConfig.title} variant={demoConfig.variant}>
-    <div class="event-demo">
-      <div id={demoConfig.eventTargetId} class="icon-container">
-        <p class="placeholder">{demoConfig.placeholder}</p>
-      </div>
-      <iconify-picker id={demoConfig.pickerId} mode={demoConfig.pickerMode} button-label="Pick Icon"></iconify-picker>
-      <div id={demoConfig.eventLogId} class="event-log">
-        <div class="event-log-header">Event Log</div>
-        <div class="event-log-content"></div>
-      </div>
-    </div>
-  </Card>
 </Section>
-
-<script define:vars={{ demoConfig }}>
-  document.addEventListener('DOMContentLoaded', () => {
-    const picker = document.getElementById(demoConfig.pickerId)
-    const iconContainer = document.getElementById(demoConfig.eventTargetId)
-    const eventLog = document.querySelector('.event-log-content')
-    
-    if (!picker || !iconContainer || !eventLog) return
-    
-    const logEvent = (name, detail = {}) => {
-      const entry = document.createElement('div')
-      entry.className = 'event-entry'
-      const detailStr = Object.entries(detail)
-        .filter(([k]) => k !== 'svg')
-        .map(([k, v]) => `${k}: ${v}`)
-        .join(', ')
-      entry.innerHTML = `
-        <span class="event-name">${name}</span>
-        <span class="event-detail">${detailStr}</span>
-        <span class="event-time">${new Date().toLocaleTimeString()}</span>
-      `
-      eventLog.prepend(entry)
-      
-      // Limit to 5 entries
-      while (eventLog.children.length > 5) eventLog.lastChild.remove()
-    }
-    
-    picker.addEventListener('icon-selected', (e) => {
-      const { iconName, collection, name } = e.detail
-      iconContainer.innerHTML = `<img src="https://api.iconify.design/${collection}/${name}.svg?height=48" alt="${iconName}">`
-      logEvent('icon-selected', e.detail)
-    })
-    
-    picker.addEventListener('change', (e) => {
-      logEvent('change', e.detail)
-    })
-  })
-</script>
-
-<style>
-.event-demo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s0);
-}
-
-.icon-container {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px dashed var(--bdr);
-  border-radius: var(--r0);
-  background: var(--bg1);
-}
-
-.icon-container img {
-  width: 48px;
-  height: 48px;
-}
-
-.placeholder {
-  color: var(--tx1);
-  font-style: italic;
-  opacity: 0.6;
-}
-
-.event-log {
-  border: 1px solid var(--bdr);
-  border-radius: var(--r0);
-  overflow: hidden;
-}
-
-.event-log-header {
-  background-color: var(--pri);
-  color: white;
-  padding: var(--s1) var(--s0);
-  font-weight: bold;
-  font-size: 0.85rem;
-}
-
-.event-log-content {
-  max-height: 160px;
-  overflow-y: auto;
-}
-
-.event-entry {
-  padding: var(--s1) var(--s0);
-  border-bottom: 1px solid var(--bdr);
-  font-family: monospace;
-  font-size: 0.8rem;
-  display: flex;
-  gap: var(--s2);
-  align-items: center;
-}
-
-.event-name {
-  font-weight: bold;
-  color: var(--pri);
-  min-width: 100px;
-}
-
-.event-detail {
-  flex: 1;
-  opacity: 0.8;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.event-time {
-  color: var(--tx1);
-  font-size: 0.75rem;
-  opacity: 0.6;
-}
-</style>

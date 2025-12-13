@@ -11,14 +11,14 @@ const { code, lang, theme } = Astro.props;
 ---
 
 <div class="code-block">
+  <button class="copy-btn" title="Copy to clipboard" aria-label="Copy code to clipboard">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </svg>
+    <span class="sr-only">Copy to clipboard</span>
+  </button>
   <div class="code-wrapper">
-    <button class="copy-btn" title="Copy to clipboard" aria-label="Copy code to clipboard">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-      </svg>
-      <span class="sr-only">Copy to clipboard</span>
-    </button>
     <Code code={code} lang={lang} theme={theme} />
   </div>
 </div>
@@ -36,26 +36,28 @@ const { code, lang, theme } = Astro.props;
 
 .copy-btn {
   position: absolute;
-  top: var(--s1);
-  right: var(--s1);
+  top: 8px;
+  right: 8px;
   background: var(--bg0);
   border: 1px solid var(--bdr);
   color: var(--tx0);
   border-radius: var(--r1);
   width: 36px;
   height: 36px;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 0.9;
   transition: opacity 0.2s, background-color 0.2s, transform 0.1s;
-  z-index: 2;
+  z-index: 1000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  pointer-events: auto;
+  visibility: visible !important;
 }
 
-.code-wrapper:hover .copy-btn {
-  opacity: 0.8;
+.code-block:hover .copy-btn {
+  opacity: 1;
 }
 
 .copy-btn:hover {
@@ -84,10 +86,15 @@ const { code, lang, theme } = Astro.props;
   padding: var(--s0);
   margin: 0;
   font-size: 0.9em;
+  position: relative;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
 .code-block :global(.astro-code) {
   padding: 0;
+  position: relative;
+  overflow: visible;
 }
 
 /* Screen reader only class */
@@ -104,13 +111,13 @@ const { code, lang, theme } = Astro.props;
 }
 </style>
 
-<script>
+<script is:inline>
 document.addEventListener('DOMContentLoaded', () => {
   const copyButtons = document.querySelectorAll('.copy-btn');
   
   copyButtons.forEach(button => {
     button.addEventListener('click', async () => {
-      const codeBlock = button.closest('.code-wrapper').querySelector('pre');
+      const codeBlock = button.closest('.code-block').querySelector('pre');
       const code = codeBlock.textContent.trim();
       
       try {
