@@ -16,7 +16,7 @@
     }
   },
   "sideEffects": true,
-  "keywords":[
+  "keywords": [
     "iconify",
     "icons",
     "web-component",
@@ -24,7 +24,7 @@
     "icon-picker",
     "icon-browser"
   ],
-  "author": "Metaory",
+  "author": "metaory <metaory@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",

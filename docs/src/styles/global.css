@@ -61,6 +61,7 @@
   /* Layout & Component */
   --w-sb: calc(var(--s4) * 6.25); /* sidebar width */
   --g-head: auto 1fr auto; /* header grid */
+  --g-body: 190px auto; /* body grid */
   --g-main: 2; /* main content grid column */
   --fs-h1: 2.8rem; /* title size */
   --fs-h2: 2rem; /* subtitle size */
@@ -80,11 +81,12 @@
 @media (max-width: 768px) {
   :root {
     --mob: 1;
+    --g-body: 1fr;
     --g-main: auto;
-    --d-sb: var(--d-n);
+    --d-sb: none;
     --g-cols: 1;
     --f-dir: column;
-    --d: var(--d-n);
+    --d: none;
     --d-n: block;
     --h-resp: 50vh;
   }
