@@ -1,5 +1,6 @@
 dev/
 docs/src/lib/
+docs/public/iconify-picker.js
 
 logs
 *.local

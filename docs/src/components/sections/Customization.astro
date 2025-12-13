@@ -493,7 +493,7 @@ const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverride
                         data-var={cssVar.name}
                         title={cssVar.description}
                       >
-                        {cssVar.options.map((option) => (
+                        {cssVar.options?.map((option) => (
                           <option value={option} selected={cssVar.defaultValue === option}>
                             {option}
                           </option>
@@ -634,7 +634,9 @@ const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverride
       </div>
 
       <div class="tab-pane" id="css-tab">
-        <CodeBlock id="generated-css-block" lang="css" code={cssVarsCode} />
+        <div id="generated-css-block">
+          <CodeBlock lang="css" code={cssVarsCode} />
+        </div>
       </div>
     </div>
 
@@ -1351,6 +1353,14 @@ const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverride
       handler.updateDisplay()
       state.variables[varName] = value
       updateComponent()
+      
+      // If icon-color changed, force icon refresh
+      if (varName === '--picker-icon-color') {
+        const picker = getOrCreatePicker()
+        if (picker && typeof picker.forceRedraw === 'function') {
+          setTimeout(() => picker.forceRedraw(), 50)
+        }
+      }
     }
   }
 
@@ -1370,14 +1380,14 @@ const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverride
 
     // Explicitly refresh icon colors
     refreshIcons: () => {
-      const picker = dom.get('demo-picker')
+      const picker = getOrCreatePicker()
       if (picker) {
         // First update component to ensure CSS vars are applied
         applyStyles(picker, state.variables)
 
-        // Then call the component's force redraw method if it exists
+        // Then call the component's force redraw method to refresh icons
         if (typeof picker.forceRedraw === 'function') {
-          picker.forceRedraw()
+          setTimeout(() => picker.forceRedraw(), 50)
         } else {
           // Force a full update if method doesn't exist
           updateComponent()
@@ -1402,6 +1412,8 @@ const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverride
             ))
       }
 
+      // Sync input elements with updated state
+      syncInputsFromState()
       updateComponent()
     },
 
@@ -1456,6 +1468,52 @@ const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverride
   // Get the appropriate initializer for an input type
   const getInitializer = (input) =>
     initializers[input.type] || initializers[input.tagName?.toLowerCase()] || initializers.default
+
+  // Sync all input elements with current state.variables values
+  const syncInputsFromState = () => {
+    // Update all inputs with data-var attribute
+    dom.queryAll('input[data-var], select[data-var]').forEach((input) => {
+      const varName = input.dataset.var
+      if (!varName) return
+
+      const currentValue = state.variables[varName]
+      if (currentValue === undefined) return
+
+      // Special case for color inputs that may be transparent
+      const varDef = [...cssVars, ...scrollbarVars].find((v) => v.name === varName)
+
+      if (varDef?.isTransparent && currentValue === 'transparent') {
+        // Find and check the transparent checkbox
+        const transparentCheckbox = dom
+          .queryAll('.transparent-option input[type="checkbox"]')
+          .find((cb) => cb.dataset.target === input.id)
+
+        if (transparentCheckbox) {
+          transparentCheckbox.checked = true
+          input.disabled = true
+        }
+      } else {
+        getInitializer(input)(input, currentValue)
+      }
+    })
+
+    // Sync transparent checkboxes
+    dom.queryAll('.transparent-option input[type="checkbox"]').forEach((checkbox) => {
+      const targetId = checkbox.dataset.target
+      if (!targetId) return
+
+      const varName = `--picker-${targetId}`
+      const currentValue = state.variables[varName] || ''
+
+      checkbox.checked = currentValue === 'transparent'
+
+      // Disable the color input if transparent
+      const colorInput = dom.get(targetId)
+      if (colorInput) {
+        colorInput.disabled = checkbox.checked
+      }
+    })
+  }
 
   // Initialize inputs from default values
   const initializeInputs = () => {

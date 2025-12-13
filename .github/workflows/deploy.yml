@@ -32,8 +32,8 @@ jobs:
 
       - name: Prepare docs
         run: |
-          mkdir -p docs/src/lib
-          cp lib/iconify-picker.js docs/src/lib/
+          mkdir -p docs/public
+          cp lib/iconify-picker.js docs/public/
 
       - name: Build Astro site
         working-directory: docs
