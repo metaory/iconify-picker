@@ -23,6 +23,7 @@
   --bg: hsl(var(--h-pri) 30% 96% / 0.6); /* main background */
   --bg1: hsl(var(--h-sec) 25% 90% / 0.6); /* surface 1 */
   --bg2: hsl(var(--h-acc) 20% 84% / 0.6); /* surface 2 */
+  --bg3: hsl(var(--h-pri) 20% 4% / 0.6); /* main background */
 
   /* Text */
   --tx0: hsl(var(--h-pri) 25% 30%); /* primary text */
@@ -294,6 +295,11 @@ canvas {
   scrollbar-color: var(--acc) transparent;
 }
 
+pre.astro-code {
+  background: var(--bg3) !important;
+  padding: 0.8em 1em !important;
+}
+
 /* Iconify Picker - match site theme */
 iconify-picker {
   --picker-primary: var(--pri);
@@ -308,4 +314,3 @@ iconify-picker {
   --picker-footer-bg: var(--bg1);
   --picker-scrollbar-color: var(--pri);
 }
-
