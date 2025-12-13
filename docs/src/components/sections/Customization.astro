@@ -24,70 +24,70 @@ const themingInfo = {
 const cssVars = [
   {
     name: '--picker-primary',
-    defaultValue: '#e74c3c',
+    defaultValue: '#ee6655',
     description: 'Primary accent color',
     type: 'color',
     category: 'main-colors'
   },
   {
     name: '--picker-bg',
-    defaultValue: '#f0f8ff',
-    description: 'Background color (dark/light)',
+    defaultValue: '#f2e0e8',
+    description: 'Background color',
     type: 'color',
     category: 'main-colors'
   },
   {
     name: '--picker-text',
-    defaultValue: '#2c3e50',
-    description: 'Text color (dark/light)',
+    defaultValue: '#4a3f5c',
+    description: 'Text color',
     type: 'color',
     category: 'main-colors'
   },
   {
     name: '--picker-border',
-    defaultValue: '#c0d6e4',
-    description: 'Border color (dark/light)',
+    defaultValue: '#d9d2e3',
+    description: 'Border color',
     type: 'color',
     category: 'main-colors'
   },
   {
     name: '--picker-hover',
-    defaultValue: '#e1f0ff',
+    defaultValue: '#e8dada',
     description: 'Hover state background',
     type: 'color',
     category: 'main-colors'
   },
   {
     name: '--picker-header-bg',
-    defaultValue: '#e8f4ff',
+    defaultValue: '#f2e0e8',
     description: 'Header background color',
     type: 'color',
     category: 'element-colors'
   },
   {
     name: '--picker-input-bg',
-    defaultValue: '#ffffff',
+    defaultValue: '#f7f3fa',
     description: 'Input fields background color',
     type: 'color',
     category: 'element-colors'
   },
   {
     name: '--picker-input-text',
-    defaultValue: '#2c3e50',
+    defaultValue: '#4a3f5c',
     description: 'Input fields text color',
     type: 'color',
     category: 'element-colors'
   },
   {
     name: '--picker-icon-color',
-    defaultValue: '#2c3e50',
+    defaultValue: '#4a3f5c',
     description: 'Icon color',
     type: 'color',
     category: 'element-colors'
   },
   {
     name: '--picker-footer-bg',
-    defaultValue: '#e8f4ff',
+    defaultValue: '#f2e0e8',
     description: 'Footer background color',
     type: 'color',
     category: 'element-colors'
@@ -247,7 +247,7 @@ const scrollbarVars = [
   },
   {
     name: '--picker-scrollbar-color',
-    defaultValue: '#e74c3c',
+    defaultValue: '#ee6655',
     description: 'Scrollbar thumb color',
     type: 'color'
   },
@@ -261,25 +261,25 @@ const scrollbarVars = [
   },
   {
     name: '--picker-scrollbar-hover',
-    defaultValue: '#ff9b92',
+    defaultValue: '#ee8877',
     description: 'Scrollbar thumb hover color',
     type: 'color'
   }
 ]
 
-// Dark theme overrides
+// Dark theme overrides (base theme is light, matching site theme)
 const darkThemeOverrides = {
-  '--picker-bg': '#1a2333',
-  '--picker-text': '#ecf0f1',
-  '--picker-border': '#2c3e50',
-  '--picker-hover': '#2a3f5f',
-  '--picker-header-bg': '#192230',
-  '--picker-input-bg': '#253545',
-  '--picker-input-text': '#ecf0f1',
-  '--picker-icon-color': '#ecf0f1',
-  '--picker-footer-bg': '#192230',
-  '--picker-scrollbar-color': '#ff9b92',
-  '--picker-scrollbar-hover': '#e74c3c'
+  '--picker-bg': '#1c1a21',
+  '--picker-text': '#eae7ef',
+  '--picker-border': '#4a3d5c',
+  '--picker-hover': '#232028',
+  '--picker-header-bg': '#1c1a21',
+  '--picker-input-bg': '#232028',
+  '--picker-input-text': '#eae7ef',
+  '--picker-icon-color': '#eae7ef',
+  '--picker-footer-bg': '#1c1a21',
+  '--picker-scrollbar-color': '#ee6655',
+  '--picker-scrollbar-hover': '#ee8877'
 }
 
 // Generate CSS example code from the variables
@@ -300,7 +300,7 @@ const generateCssExample = (vars, scrollVars, darkOverrides) => {
 
   cssLines.push('}')
 
-  // Add dark mode section
+  // Add dark mode section (base theme is light)
   if (Object.keys(darkOverrides).length > 0) {
     cssLines.push('')
     cssLines.push('/* Dark mode customization */')
@@ -665,63 +665,24 @@ const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverride
   }
 
   :global(.custom-styled) {
-    /* Main colors */
-    --picker-primary: #e74c3c;
-    --picker-bg: #f0f8ff;
-    --picker-text: #2c3e50;
-    --picker-border: #c0d6e4;
-    --picker-hover: #e1f0ff;
-
-    /* Element-specific colors */
-    --picker-header-bg: #e8f4ff;
-    --picker-input-bg: #ffffff;
-    --picker-input-text: #2c3e50;
-    --picker-icon-color: #2c3e50;
-    --picker-footer-bg: #e8f4ff;
-
-    /* Radius variables */
+    /* Inherits colors from global.css iconify-picker styles */
+    /* Structural overrides for demo */
     --picker-radius: 12px;
     --picker-container-radius: 12px;
     --picker-input-radius: 8px;
     --picker-icon-radius: 6px;
     --picker-button-radius: 8px;
-
-    /* Border width variables */
     --picker-border-width: 3px;
     --picker-container-border-width: 3px;
     --picker-input-border-width: 1px;
     --picker-icon-border-width: 1px;
-
-    /* Spacing variables */
     --picker-padding: 16px;
     --picker-gap: 8px;
-
-    /* Dimension variables */
     --picker-icon-size: 24px;
     --picker-max-height: 60vh;
-
-    /* Scrollbar variables */
     --picker-scrollbar-width: thin;
-    --picker-scrollbar-color: #e74c3c;
     --picker-scrollbar-track: transparent;
-    --picker-scrollbar-hover: #ff9b92;
-
     margin: 0 auto;
-  }
-
-  :global(html.dark .custom-styled) {
-    /* Dark theme variables */
-    --picker-bg: #1a2333;
-    --picker-text: #ecf0f1;
-    --picker-border: #2c3e50;
-    --picker-hover: #2a3f5f;
-    --picker-header-bg: #192230;
-    --picker-input-bg: #253545;
-    --picker-input-text: #ecf0f1;
-    --picker-icon-color: #ecf0f1;
-    --picker-footer-bg: #192230;
-    --picker-scrollbar-color: #ff9b92;
-    --picker-scrollbar-hover: #e74c3c;
   }
 
   /* Direct styles for Shadow DOM parts */
@@ -1343,7 +1304,7 @@ const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverride
     // Build CSS sections
     const mainCSS = `iconify-picker {\n${formatVars(state.variables)}\n}`
 
-    // Conditional dark mode CSS
+    // Conditional dark mode CSS (base theme is light)
     const hasDarkVars = Object.keys(darkThemeOverrides).length > 0
     const darkCSS = hasDarkVars
       ? `\n\n/* Dark mode customization */\n@media (prefers-color-scheme: dark) {\n  iconify-picker {\n${formatVars(
@@ -1424,14 +1385,14 @@ const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverride
       }
     },
 
-    // Toggle dark mode
+    // Toggle dark mode (base theme is dark, toggle applies light overrides when unchecked)
     toggleDarkMode: () => {
       const darkModeToggle = dom.get('dark-mode-toggle')
       if (!darkModeToggle) return
 
       state.isDarkMode = darkModeToggle.checked
 
-      // Apply dark theme or reset to defaults using functional approach
+      // Apply dark theme overrides when dark mode is ON, reset to light defaults when OFF
       state.variables = {
         ...state.variables,
         ...(state.isDarkMode
@@ -1541,7 +1502,7 @@ const cssVarsCode = generateCssExample(cssVars, scrollbarVars, darkThemeOverride
       }
     })
 
-    // Apply dark mode variables if needed
+    // Apply dark mode variables if dark mode is on (base theme is light)
     if (state.isDarkMode) {
       Object.assign(state.variables, darkThemeOverrides)
     }

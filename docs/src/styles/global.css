@@ -294,3 +294,18 @@ canvas {
   scrollbar-color: var(--acc) transparent;
 }
 
+/* Iconify Picker - match site theme */
+iconify-picker {
+  --picker-primary: var(--pri);
+  --picker-bg: var(--bg1);
+  --picker-text: var(--tx0);
+  --picker-border: var(--bdr);
+  --picker-hover: var(--bg2);
+  --picker-header-bg: var(--bg1);
+  --picker-input-bg: var(--bg0);
+  --picker-input-text: var(--tx0);
+  --picker-icon-color: var(--tx0);
+  --picker-footer-bg: var(--bg1);
+  --picker-scrollbar-color: var(--pri);
+}
+
