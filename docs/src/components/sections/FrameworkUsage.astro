@@ -3,6 +3,27 @@ import Section from '../ui/Section.astro'
 import CodeBlock from '../ui/CodeBlock.astro'
 ---
 
+<Section id="vanilla" title="Vanilla JavaScript Usage">
+  <p>Use Iconify Picker in vanilla JavaScript:</p>
+  
+  <CodeBlock code={`<iconify-picker
+  id="my-picker"
+  collection="mdi"
+  mode="button"
+  button-label="Choose Icon"
+></iconify-picker>
+
+<script type="module">
+  import IconifyPicker from 'iconify-picker';
+  
+  const picker = document.getElementById('my-picker');
+  
+  picker.addEventListener('icon-selected', (e) => {
+    console.log('Selected:', e.detail.iconName);
+  });
+</script>`} lang="html" />
+</Section>
+
 <Section id="react" title="React Usage">
   <p>Use Iconify Picker in your React components:</p>
   

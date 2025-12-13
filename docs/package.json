@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "predev": "mkdir -p public && cp ../lib/iconify-picker.js public/",
     "dev": "astro dev --host",
     "build": "astro build",
     "preview": "astro preview",
