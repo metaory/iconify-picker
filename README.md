@@ -12,13 +12,11 @@ A zero-dependency, framework-agnostic icon picker web component powered by Iconi
 
 ## Documentation
 
-Visit our [documentation site](https://yourusername.github.io/iconify-picker/) for detailed usage instructions and examples.
+Visit our [documentation site](https://metaory.github.io/iconify-picker/) for detailed usage instructions and examples
 
-Here's a **README template** for an **Autonomous Mode Component**—tailored to your standards. It emphasizes declarative usage, minimalism, browser-native behavior, and styling flexibility.
+### `<iconify-picker>`
 
-# `<iconify-picker>`
-
-**Autonomous Mode Web Component** for selecting icons from any [Iconify](https://iconify.design/) collection.
+**Autonomous Mode Web Component** for selecting icons from any [Iconify](https://iconify.design/) collection
 
 - ⚡ **Zero dependencies**
 - 🎯 **Autonomous behavior**: configurable via attributes
@@ -64,7 +62,7 @@ npm install iconify-picker
 <iconify-picker id="picker" mode="manual" hidden collection="mdi"></iconify-picker>
 
 <script>
-  picker.show(); // Open picker manually
+  picker.show() // Open picker manually
 </script>
 ```
 
@@ -72,45 +70,45 @@ npm install iconify-picker
 
 ## Attributes
 
-| Attribute     | Description                                  |
-|---------------|----------------------------------------------|
-| `collection`  | Iconify collection ID (e.g. `mdi`, `lucide`) |
-| `mode`        | `inline` (default), `button`, `manual`       |
-| `button-label`| Label for button (in `button` mode)          |
-| `theme`       | `light`, `dark`, or `auto` (default)         |
-| `filter`      | Initial filter query                         |
-| `page-size`   | Number of icons per page                     |
-| `selected`    | Pre-selected icon (format: `collection:name`)|
-| `height`      | Component height                             |
-| `hidden`      | Hide the component                           |
+| Attribute      | Description                                   |
+| -------------- | --------------------------------------------- |
+| `collection`   | Iconify collection ID (e.g. `mdi`, `lucide`)  |
+| `mode`         | `inline` (default), `button`, `manual`        |
+| `button-label` | Label for button (in `button` mode)           |
+| `theme`        | `light`, `dark`, or `auto` (default)          |
+| `filter`       | Initial filter query                          |
+| `page-size`    | Number of icons per page                      |
+| `selected`     | Pre-selected icon (format: `collection:name`) |
+| `height`       | Component height                              |
+| `hidden`       | Hide the component                            |
 
 ---
 
 ## Events
 
-| Event            | Detail Payload                                 |
-|------------------|-----------------------------------------------|
-| `icon-selected`  | `{ iconName, collection, name, svg }`          |
-| `change`         | Same as `icon-selected`                        |
+| Event           | Detail Payload                        |
+| --------------- | ------------------------------------- |
+| `icon-selected` | `{ iconName, collection, name, svg }` |
+| `change`        | Same as `icon-selected`               |
 
 ```js
 picker.addEventListener('icon-selected', (e) => {
-  console.log(e.detail.iconName); // e.g. "mdi:home"
-  console.log(e.detail.svg);      // Raw SVG content
-});
+  console.log(e.detail.iconName) // e.g. "mdi:home"
+  console.log(e.detail.svg) // Raw SVG content
+})
 ```
 
 ---
 
 ## Methods
 
-| Method       | Description               |
-|--------------|---------------------------|
-| `.show()`    | Show picker               |
-| `.hide()`    | Hide picker               |
-| `.toggle()`  | Toggle visibility         |
-| `.reset()`   | Clear filter/selection    |
-| `.focus()`   | Focus search input        |
+| Method      | Description            |
+| ----------- | ---------------------- |
+| `.show()`   | Show picker            |
+| `.hide()`   | Hide picker            |
+| `.toggle()` | Toggle visibility      |
+| `.reset()`  | Clear filter/selection |
+| `.focus()`  | Focus search input     |
 
 ---
 
@@ -121,14 +119,14 @@ Customize with CSS custom properties. The component defaults to a dark theme.
 ### Quick Reference
 
 | Property           | Default   | Description          |
-|--------------------|-----------|----------------------|
+| ------------------ | --------- | -------------------- |
 | `--picker-primary` | `#ff5c8a` | Primary accent color |
 | `--picker-bg`      | `#181825` | Background color     |
 | `--picker-text`    | `#f5f5f5` | Text color           |
 | `--picker-border`  | `#313244` | Border color         |
 | `--picker-hover`   | `#1e1e2e` | Hover background     |
 
-For the full list of CSS variables (colors, radius, borders, spacing, scrollbar), see the [documentation site](https://yourusername.github.io/iconify-picker/).
+For the full list of CSS variables (colors, radius, borders, spacing, scrollbar), see the [documentation site](https://metaory.github.io/iconify-picker/).
 
 ### Example
 
@@ -154,8 +152,12 @@ iconify-picker {
 Style internal elements with `::part()`:
 
 ```css
-iconify-picker::part(container) { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-iconify-picker::part(icon):hover { transform: scale(1.1); }
+iconify-picker::part(container) {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+iconify-picker::part(icon):hover {
+  transform: scale(1.1);
+}
 ```
 
 Parts: `container`, `header`, `footer`, `search`, `select`, `grid`, `icon`, `icon-image`, `button`, `pagination`
@@ -178,3 +180,4 @@ npm run build
 ## License
 
 [MIT](LICENSE)
+
