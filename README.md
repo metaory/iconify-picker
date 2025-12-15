@@ -1,183 +1,84 @@
 # Iconify Picker Web Component
 
-A zero-dependency, framework-agnostic icon picker web component powered by Iconify.
-
-## Features
-
-- 🚀 Zero dependencies
-- 🎨 Fully themeable
-- 🔌 Framework agnostic
-- 🎯 Multiple modes (inline, button, manual)
-- 📦 Lightweight and fast
-
-## Documentation
-
-Visit our [documentation site](https://metaory.github.io/iconify-picker/) for detailed usage instructions and examples
-
-### `<iconify-picker>`
-
-**Autonomous Mode Web Component** for selecting icons from any [Iconify](https://iconify.design/) collection
-
-- ⚡ **Zero dependencies**
-- 🎯 **Autonomous behavior**: configurable via attributes
-- 🎨 **Styleable** with CSS custom properties
-- 🧩 **Interoperable** with any framework or HTML
-- 🧠 **Event-driven** and imperatively accessible
-
----
+Zero-dependency, framework-agnostic icon picker powered by Iconify.
 
 ## Install
 
-Via CDN:
+- Package managers:
+  - `npm install iconify-picker`
+  - `pnpm add iconify-picker`
+- CDN:
+  - `https://cdn.jsdelivr.net/npm/iconify-picker@0.6.2/lib/iconify-picker.js`
+  - `https://unpkg.com/iconify-picker@0.6.2/lib/iconify-picker.js`
 
-```html
-<script type="module" src="https://cdn.example.com/iconify-picker.js"></script>
+## Use
+
+Module import (npm/pnpm)
+
+```js
+import 'iconify-picker' // registers <iconify-picker>
+// or: import IconifyPicker from 'iconify-picker'
 ```
-
-Or npm:
-
-```bash
-npm install iconify-picker
-```
-
----
-
-## Usage
-
-### Always Visible Picker
 
 ```html
 <iconify-picker collection="mdi"></iconify-picker>
 ```
 
-### Button-Toggled Picker
+CDN
 
 ```html
-<iconify-picker mode="button" button-label="Choose Icon" collection="mdi"></iconify-picker>
+<script type="module" src="https://cdn.jsdelivr.net/npm/iconify-picker@0.6.2/lib/iconify-picker.js"></script>
+<iconify-picker collection="mdi"></iconify-picker>
 ```
 
-### Programmatic Display
+Button mode
 
 ```html
-<iconify-picker id="picker" mode="manual" hidden collection="mdi"></iconify-picker>
+<iconify-picker mode="button" button-label="Choose Icon" collection="lucide"></iconify-picker>
+```
 
-<script>
-  picker.show() // Open picker manually
+Manual control
+
+```html
+<iconify-picker id="picker" mode="manual" hidden collection="tabler"></iconify-picker>
+<script type="module">
+  picker.show()
+  picker.addEventListener('icon-selected', (e) => console.log(e.detail.iconName))
 </script>
 ```
 
----
-
 ## Attributes
 
-| Attribute      | Description                                   |
-| -------------- | --------------------------------------------- |
-| `collection`   | Iconify collection ID (e.g. `mdi`, `lucide`)  |
-| `mode`         | `inline` (default), `button`, `manual`        |
-| `button-label` | Label for button (in `button` mode)           |
-| `theme`        | `light`, `dark`, or `auto` (default)          |
-| `filter`       | Initial filter query                          |
-| `page-size`    | Number of icons per page                      |
-| `selected`     | Pre-selected icon (format: `collection:name`) |
-| `height`       | Component height                              |
-| `hidden`       | Hide the component                            |
-
----
+`collection`, `mode` (`inline`|`button`|`manual`), `button-label`, `theme` (`light`|`dark`|`auto`), `filter`, `search`, `page-size`, `selected`, `height`, `hidden`
 
 ## Events
 
-| Event           | Detail Payload                        |
-| --------------- | ------------------------------------- |
-| `icon-selected` | `{ iconName, collection, name, svg }` |
-| `change`        | Same as `icon-selected`               |
-
-```js
-picker.addEventListener('icon-selected', (e) => {
-  console.log(e.detail.iconName) // e.g. "mdi:home"
-  console.log(e.detail.svg) // Raw SVG content
-})
-```
-
----
+- `icon-selected`: `{ iconName, collection, name, svg }`
+- `change`: same payload for form compatibility
 
 ## Methods
 
-| Method      | Description            |
-| ----------- | ---------------------- |
-| `.show()`   | Show picker            |
-| `.hide()`   | Hide picker            |
-| `.toggle()` | Toggle visibility      |
-| `.reset()`  | Clear filter/selection |
-| `.focus()`  | Focus search input     |
-
----
+`.show()`, `.hide()`, `.toggle()`, `.reset()`, `.focus()`
 
 ## Styling
 
-Customize with CSS custom properties. The component defaults to a dark theme.
+CSS custom properties prefixed with `--picker-*` (colors, radius, borders, spacing, scrollbar). Shadow parts: `container`, `header`, `footer`, `search`, `select`, `grid`, `icon`, `icon-image`, `button`, `pagination`.
 
-### Quick Reference
+## References
 
-| Property           | Default   | Description          |
-| ------------------ | --------- | -------------------- |
-| `--picker-primary` | `#ff5c8a` | Primary accent color |
-| `--picker-bg`      | `#181825` | Background color     |
-| `--picker-text`    | `#f5f5f5` | Text color           |
-| `--picker-border`  | `#313244` | Border color         |
-| `--picker-hover`   | `#1e1e2e` | Hover background     |
-
-For the full list of CSS variables (colors, radius, borders, spacing, scrollbar), see the [documentation site](https://metaory.github.io/iconify-picker/).
-
-### Example
-
-```css
-iconify-picker {
-  --picker-primary: #3498db;
-  --picker-bg: #181825;
-  --picker-text: #f5f5f5;
-}
-
-/* Light mode override */
-@media (prefers-color-scheme: light) {
-  iconify-picker {
-    --picker-bg: #f0f8ff;
-    --picker-text: #2c3e50;
-    --picker-border: #c0d6e4;
-  }
-}
-```
-
-### Shadow Parts
-
-Style internal elements with `::part()`:
-
-```css
-iconify-picker::part(container) {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-iconify-picker::part(icon):hover {
-  transform: scale(1.1);
-}
-```
-
-Parts: `container`, `header`, `footer`, `search`, `select`, `grid`, `icon`, `icon-image`, `button`, `pagination`
-
----
+- Docs site: https://metaory.github.io/iconify-picker/
+- Vanilla example: `examples/vanilla/index.html`
+- Package: `lib/iconify-picker.js`
 
 ## Development
 
 ```bash
-# Install dependencies
-npm install
-
-# Start dev server
-npm run dev
-
-# Build for production
-npm run build
+pnpm install
+pnpm run dev
+pnpm run build
 ```
 
 ## License
 
-[MIT](LICENSE)
+MIT
 
