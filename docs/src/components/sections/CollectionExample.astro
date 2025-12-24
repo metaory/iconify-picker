@@ -1,0 +1,51 @@
+---
+import Section from '../ui/Section.astro';
+import CodeBlock from '../ui/CodeBlock.astro';
+import EventLog from '../ui/EventLog.astro';
+---
+
+<Section id="collection-example" title="Collection with Hidden Search">
+  <p>
+    Example of a picker with a pre-selected collection and hidden search input and collection dropdown:
+  </p>
+  
+  <div class="picker-container">
+    <iconify-picker
+      id="collection-example-picker"
+      collection="heroicons"
+      hide-search
+      hide-collection
+      theme="auto"
+      page-size="30">
+    </iconify-picker>
+  </div>
+  
+  <CodeBlock 
+    lang="html" 
+    code={`<iconify-picker
+  collection="heroicons"
+  hide-search
+  hide-collection
+  page-size="30">
+</iconify-picker>`} 
+  />
+  
+  <EventLog id="collection-example-events" pickerIds={['collection-example-picker']} />
+</Section>
+
+<style>
+.picker-container {
+  width: var(--w0);
+  min-height: 300px;
+  border: 1px solid var(--bdr);
+  border-radius: var(--r0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg0);
+  padding: var(--s0);
+  gap: var(--s0);
+  flex-direction: column;
+}
+</style>
+

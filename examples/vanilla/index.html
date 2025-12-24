@@ -1,181 +1,210 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iconify Picker - Vanilla Example</title>
-  <style>
-    :root {
-      color-scheme: dark;
-    }
-    
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #181825;
-      color: #f5f5f5;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-    
-    h1 {
-      color: #ff5c8a;
-      border-bottom: 4px solid #1e1e2e;
-      padding-bottom: 1rem;
-    }
-    
-    section {
-      margin: 2rem 0;
-      border: 4px solid #1e1e2e;
-      border-radius: 1.2rem;
-      padding: 1.5rem;
-    }
-    
-    .selected-icon {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #222235;
-      border-radius: 0.8rem;
-    }
-    
-    .selected-icon svg,
-    .selected-icon img {
-      width: 32px;
-      height: 32px;
-    }
-    
-    button {
-      background: #ff5c8a;
-      border: none;
-      border-radius: 0.8rem;
-      color: white;
-      padding: 0.5rem 1rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    
-    /* Custom theme for the second example */
-    #custom-picker {
-      --picker-primary: #3b82f6;
-      --picker-bg: #0f172a;
-      --picker-border: #1e293b;
-      --picker-hover: #1e293b;
-      --picker-text: #f1f5f9;
-      --picker-radius: 0.5rem;
-      --picker-border-width: 2px;
-      --picker-icon-size: 32px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Iconify Picker Examples</h1>
-  
-  <section>
-    <h2>Basic Inline Mode</h2>
-    <p>Always visible picker with default settings:</p>
-    <iconify-picker 
-      id="inline-picker" 
-      collection="mdi" 
-      page-size="30"
-      theme="dark">
-    </iconify-picker>
-    
-    <div class="selected-icon" id="inline-result">
-      <p>Selected icon will appear here</p>
-    </div>
-  </section>
-  
-  <section>
-    <h2>Button Mode with Custom Theme</h2>
-    <p>Click the button to toggle the picker:</p>
-    <iconify-picker 
-      id="custom-picker" 
-      mode="button" 
-      button-label="Choose an Icon" 
-      collection="lucide"
-      page-size="36"
-      theme="dark">
-    </iconify-picker>
-    
-    <div class="selected-icon" id="button-result">
-      <p>Selected icon will appear here</p>
-    </div>
-  </section>
-  
-  <section>
-    <h2>Manual Mode</h2>
-    <p>Programmatically control the picker visibility:</p>
-    <button id="show-picker">Show Picker</button>
-    <button id="hide-picker">Hide Picker</button>
-    <button id="reset-picker">Reset Selection</button>
-    
-    <iconify-picker 
-      id="manual-picker" 
-      mode="manual" 
-      collection="tabler" 
-      page-size="24"
-      theme="dark" 
-      hidden>
-    </iconify-picker>
-    
-    <div class="selected-icon" id="manual-result">
-      <p>Selected icon will appear here</p>
-    </div>
-  </section>
-  
-  <script type="module">
-    import IconifyPicker from './iconify-picker.js';
-    
-    // Handle inline picker selection
-    document.getElementById('inline-picker').addEventListener('icon-selected', (e) => {
-      const result = document.getElementById('inline-result');
-      result.innerHTML = `
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iconify Picker - Vanilla Example</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: #181825;
+        color: #f5f5f5;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      h1 {
+        color: #ff5c8a;
+        border-bottom: 4px solid #1e1e2e;
+        padding-bottom: 1rem;
+      }
+
+      section {
+        margin: 2rem 0;
+        border: 4px solid #1e1e2e;
+        border-radius: 1.2rem;
+        padding: 1.5rem;
+      }
+
+      .selected-icon {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #222235;
+        border-radius: 0.8rem;
+      }
+
+      .selected-icon svg,
+      .selected-icon img {
+        width: 32px;
+        height: 32px;
+      }
+
+      button {
+        background: #ff5c8a;
+        border: none;
+        border-radius: 0.8rem;
+        color: white;
+        padding: 0.5rem 1rem;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      /* Custom theme for the second example */
+      #custom-picker {
+        --picker-primary: #3b82f6;
+        --picker-bg: #0f172a;
+        --picker-border: #1e293b;
+        --picker-hover: #1e293b;
+        --picker-text: #f1f5f9;
+        --picker-radius: 0.5rem;
+        --picker-border-width: 2px;
+        --picker-icon-size: 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Iconify Picker Examples</h1>
+
+    <section>
+      <h2>Basic Inline Mode</h2>
+      <p>Always visible picker with default settings:</p>
+      <iconify-picker id="inline-picker" collection="mdi" page-size="30" theme="dark">
+      </iconify-picker>
+
+      <div class="selected-icon" id="inline-result">
+        <p>Selected icon will appear here</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Button Mode with Custom Theme</h2>
+      <p>Click the button to toggle the picker:</p>
+      <iconify-picker
+        id="custom-picker"
+        mode="button"
+        button-label="Choose an Icon"
+        collection="lucide"
+        page-size="36"
+        theme="dark"
+      >
+      </iconify-picker>
+
+      <div class="selected-icon" id="button-result">
+        <p>Selected icon will appear here</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Manual Mode</h2>
+      <p>Programmatically control the picker visibility:</p>
+      <button id="show-picker">Show Picker</button>
+      <button id="hide-picker">Hide Picker</button>
+      <button id="reset-picker">Reset Selection</button>
+
+      <iconify-picker
+        id="manual-picker"
+        mode="manual"
+        collection="tabler"
+        page-size="24"
+        theme="dark"
+        hidden
+      >
+      </iconify-picker>
+
+      <div class="selected-icon" id="manual-result">
+        <p>Selected icon will appear here</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Collection with Hidden Search</h2>
+      <p>Picker with a pre-selected collection and hidden search input:</p>
+      <iconify-picker
+        id="collection-picker"
+        collection="heroicons"
+        hide-search
+        page-size="30"
+        theme="dark"
+      >
+      </iconify-picker>
+
+      <div class="selected-icon" id="collection-result">
+        <p>Selected icon will appear here</p>
+      </div>
+    </section>
+
+    <script type="module">
+      import IconifyPicker from './iconify-picker.js'
+
+      // Handle inline picker selection
+      document.getElementById('inline-picker').addEventListener('icon-selected', (e) => {
+        const result = document.getElementById('inline-result')
+        result.innerHTML = `
         <img src="https://api.iconify.design/${e.detail.collection}/${e.detail.name}.svg" alt="${e.detail.iconName}">
         <div>
           <strong>Selected:</strong> ${e.detail.iconName}
         </div>
-      `;
-    });
-    
-    // Handle button mode picker selection
-    document.getElementById('custom-picker').addEventListener('icon-selected', (e) => {
-      const result = document.getElementById('button-result');
-      result.innerHTML = `
+      `
+      })
+
+      // Handle button mode picker selection
+      document.getElementById('custom-picker').addEventListener('icon-selected', (e) => {
+        const result = document.getElementById('button-result')
+        result.innerHTML = `
         <img src="https://api.iconify.design/${e.detail.collection}/${e.detail.name}.svg" alt="${e.detail.iconName}">
         <div>
           <strong>Selected:</strong> ${e.detail.iconName}
         </div>
-      `;
-    });
-    
-    // Handle manual mode picker
-    const manualPicker = document.getElementById('manual-picker');
-    
-    document.getElementById('show-picker').addEventListener('click', () => {
-      manualPicker.show();
-    });
-    
-    document.getElementById('hide-picker').addEventListener('click', () => {
-      manualPicker.hide();
-    });
-    
-    document.getElementById('reset-picker').addEventListener('click', () => {
-      manualPicker.reset();
-      document.getElementById('manual-result').innerHTML = '<p>Selection reset</p>';
-    });
-    
-    manualPicker.addEventListener('icon-selected', (e) => {
-      const result = document.getElementById('manual-result');
-      result.innerHTML = `
+      `
+      })
+
+      // Handle manual mode picker
+      const manualPicker = document.getElementById('manual-picker')
+
+      document.getElementById('show-picker').addEventListener('click', () => {
+        manualPicker.show()
+      })
+
+      document.getElementById('hide-picker').addEventListener('click', () => {
+        manualPicker.hide()
+      })
+
+      document.getElementById('reset-picker').addEventListener('click', () => {
+        manualPicker.reset()
+        document.getElementById('manual-result').innerHTML = '<p>Selection reset</p>'
+      })
+
+      manualPicker.addEventListener('icon-selected', (e) => {
+        const result = document.getElementById('manual-result')
+        result.innerHTML = `
         <img src="https://api.iconify.design/${e.detail.collection}/${e.detail.name}.svg" alt="${e.detail.iconName}">
         <div>
           <strong>Selected:</strong> ${e.detail.iconName}
         </div>
-      `;
-    });
-  </script>
-</body>
+      `
+      })
+
+      // Handle collection picker selection
+      document.getElementById('collection-picker').addEventListener('icon-selected', (e) => {
+        const result = document.getElementById('collection-result')
+        result.innerHTML = `
+        <img src="https://api.iconify.design/${e.detail.collection}/${e.detail.name}.svg" alt="${e.detail.iconName}">
+        <div>
+          <strong>Selected:</strong> ${e.detail.iconName}
+        </div>
+      `
+      })
+    </script>
+  </body>
 </html>

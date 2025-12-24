@@ -47,9 +47,17 @@ Manual control
 </script>
 ```
 
+Hide search or collection dropdown
+
+```html
+<iconify-picker collection="mdi" hide-search></iconify-picker>
+<iconify-picker collection="lucide" hide-collection></iconify-picker>
+<iconify-picker collection="heroicons" hide-search hide-collection></iconify-picker>
+```
+
 ## Attributes
 
-`collection`, `mode` (`inline`|`button`|`manual`), `button-label`, `theme` (`light`|`dark`|`auto`), `filter`, `search`, `page-size`, `selected`, `height`, `hidden`
+`collection`, `mode` (`inline`|`button`|`manual`), `button-label`, `theme` (`light`|`dark`|`auto`), `filter`, `search`, `page-size`, `selected`, `height`, `hidden`, `hide-search`, `hide-collection`
 
 ## Events
 

@@ -1,6 +1,6 @@
 {
   "name": "iconify-picker",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "type": "module",
   "description": "Zero-dependency icon picker web component powered by Iconify",
   "files": [

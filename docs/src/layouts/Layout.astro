@@ -37,6 +37,33 @@ const {
 			<slot />
 			<Footer />
 		</main>
+		<script is:inline>
+			// Apply icon color to all iconify-picker elements exactly like Customization section does
+			const applyIconColor = () => {
+				const pickers = document.querySelectorAll('iconify-picker')
+				const styles = getComputedStyle(document.documentElement)
+				const iconColor = styles.getPropertyValue('--pri')?.trim() || '#ee6655'
+
+				pickers.forEach((picker) => {
+					// Apply exactly like Customization section's cssVarUtils.applyAll
+					picker.style.setProperty('--picker-icon-color', iconColor, 'important')
+					picker.style.setProperty('--icon-color', iconColor, 'important')
+					picker.style.setProperty('--icon-color', iconColor, 'important')
+
+					// Force icon redraw to pick up new color
+					if (typeof picker.forceRedraw === 'function') {
+						setTimeout(() => picker.forceRedraw(), 50)
+					}
+				})
+			}
+
+			// Apply on load
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', applyIconColor)
+			} else {
+				applyIconColor()
+			}
+		</script>
 	</body>
 </html>
 
