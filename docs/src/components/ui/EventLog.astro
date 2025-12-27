@@ -72,18 +72,17 @@ const { id, pickerIds } = Astro.props;
 <script define:vars={{ pickerIds }}>
 document.addEventListener('DOMContentLoaded', () => {
   const logContainers = document.querySelectorAll('.event-log');
-  
+
   logContainers.forEach(container => {
     const logContent = container.querySelector('.log-content');
     const clearBtn = container.querySelector('.clear-log');
-    
+
     if (!logContent) return;
-    
+
     const logEvent = (event) => {
       const entry = document.createElement('div');
       entry.className = 'log-entry';
       const detail = { ...event.detail };
-      delete detail.svg;
       const eventData = {
         type: event.type,
         ...detail
@@ -97,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       logContent.appendChild(entry);
       logContent.scrollTop = logContent.scrollHeight;
     };
-    
+
     // If pickerIds are provided, listen to all of them
     if (pickerIds && pickerIds.length > 0) {
       pickerIds.forEach(pickerId => {
@@ -116,11 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
         picker.addEventListener('change', logEvent);
       }
     }
-    
+
     // Clear log
     clearBtn?.addEventListener('click', () => {
       logContent.innerHTML = '';
     });
   });
 });
-</script> 
+</script>
