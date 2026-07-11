@@ -20,6 +20,7 @@
   --blk: #000000;
 
   /* UI Surfaces */
+  --bg0: hsl(var(--h-pri) 30% 96% / 0.92);
   --bg: hsl(var(--h-pri) 30% 96% / 0.6); /* main background */
   --bg1: hsl(var(--h-sec) 25% 90% / 0.6); /* surface 1 */
   --bg2: hsl(var(--h-acc) 20% 84% / 0.6); /* surface 2 */
@@ -94,7 +95,7 @@
 }
 
 html.dark {
-  --bg0: hsl(var(--h-pri) 12% 12% / 60%);
+  --bg0: hsl(var(--h-pri) 12% 12% / 70%);
   --bg1: hsl(var(--h-pri) 12% 15% / 60%);
   --bg2: hsl(var(--h-pri) 12% 18% / 60%);
   --tx0: hsl(var(--h-pri) 18% 92%);
@@ -268,6 +269,7 @@ video {
 
 canvas {
   filter: var(--f-inv);
+  mix-blend-mode: hue;
 }
 
 /* Modern scrollbar styles */

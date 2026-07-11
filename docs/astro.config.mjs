@@ -11,9 +11,7 @@ export default defineConfig({
   site: 'https://metaory.github.io',
   base: '/iconify-picker/',
   trailingSlash: 'never',
-  experimental: {
-    // viewTransitions: true,
-    fonts: [
+  fonts: [
       {
         provider: fontProviders.fontsource(),
         name: 'Libre Barcode 128 Text',
@@ -58,8 +56,7 @@ export default defineConfig({
         cssVariable: '--font-blackout-midnight',
       },
 
-    ],
-  },
+  ],
   markdown: {
     shikiConfig: {
       themes: {

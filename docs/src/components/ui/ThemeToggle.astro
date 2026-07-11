@@ -31,24 +31,16 @@ import darkIcon from '@assets/dark.svg'
   const toggle = document.getElementById('theme-toggle')
 
   // Initialize theme on page load
-  const setTheme = (theme) => {
+  const setTheme = (theme, notify = false) => {
     html.classList.toggle('dark', theme === 'dark')
     localStorage.setItem('theme', theme)
-
-    // Show notification
-    showThemeNotification(theme)
+    if (notify) showThemeNotification(theme)
   }
-
-  // Set initial theme
-  const storedTheme = localStorage.getItem('theme')
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-  const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light')
-  setTheme(initialTheme)
 
   // Handle toggle click
   toggle.addEventListener('click', () => {
     const isDark = html.classList.toggle('dark')
-    setTheme(isDark ? 'dark' : 'light')
+    setTheme(isDark ? 'dark' : 'light', true)
   })
 
   // Theme notification function
