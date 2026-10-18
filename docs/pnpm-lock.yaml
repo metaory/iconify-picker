@@ -11,9 +11,6 @@ importers:
       astro:
         specifier: ^7.0.7
         version: 7.0.7(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@25.0.1)(rollup@4.53.3)
-      gradient-gl:
-        specifier: ^1.5.2
-        version: 1.5.2
       sharp:
         specifier: ^0.35.3
         version: 0.35.3(@types/node@25.0.1)
@@ -968,9 +965,6 @@ packages:
 
   github-slugger@2.0.0:
     resolution: {integrity: sha512-IaOQ9puYtjrkq7Y0Ygl9KDZnrf/aiUJYUpVf89y8kyaxbRG7Y1SrX/jaumrv81vc61+kiMempujsM3Yw7w5qcw==}
-
-  gradient-gl@1.5.2:
-    resolution: {integrity: sha512-rH88NPNgr8KMwwLjIwMZh4rQkMnLwcCymBUow5NqvHTH4imLlFcX8TOiRb9lSvbCe4zVmCgeFtb6p4tzh23JAg==}
 
   h3@1.15.11:
     resolution: {integrity: sha512-L3THSe2MPeBwgIZVSH5zLdBBU90TOxarvhK9d04IDY2AmVS8j2Jz2LIWtwsGOU3lu2I5jCN7FNvVfY2+XyF+mg==}
@@ -2314,8 +2308,6 @@ snapshots:
       resolve-pkg-maps: 1.0.0
 
   github-slugger@2.0.0: {}
-
-  gradient-gl@1.5.2: {}
 
   h3@1.15.11:
     dependencies:
