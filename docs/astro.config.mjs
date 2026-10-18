@@ -12,51 +12,22 @@ export default defineConfig({
   base: '/iconify-picker/',
   trailingSlash: 'never',
   fonts: [
-      {
-        provider: fontProviders.fontsource(),
-        name: 'Libre Barcode 128 Text',
-        cssVariable: '--font-barcode',
-      },
-      {
-        provider: fontProviders.fontsource(),
-        name: 'Bungee Shade',
-        cssVariable: '--font-bungee',
-      },
-      {
-        provider: fontProviders.fontsource(),
-        name: 'Nabla',
-        cssVariable: '--font-nabla',
-      },
-      // { provider: fontProviders.fontsource(), name: 'Fredoka One', cssVariable: '--font-fredoka', },
-      {
-        provider: fontProviders.fontsource(),
-        name: 'Monofett',
-        cssVariable: '--font-monofett',
-      },
-      {
-        provider: fontProviders.fontsource(),
-        name: 'Monaspace Krypton',
-        cssVariable: '--font-krypton',
-        weights: [500,800]
-      },
-      // {
-      //   provider: fontProviders.fontsource(),
-      //   name: 'Staatliches',
-      //   cssVariable: '--font-staatliches',
-      // },
-      {
-        provider: fontProviders.fontsource(),
-        name: 'Baloo 2',
-        cssVariable: '--font-baloo2',
-        weights: [100,800]
-      },
-      {
-        provider: fontProviders.fontsource(),
-        name: 'Blackout Midnight',
-        cssVariable: '--font-blackout-midnight',
-      },
-
-  ],
+    ['Libre Barcode 128 Text', '--font-barcode', [['barcode.woff2', 400]]],
+    ['Bungee Shade', '--font-bungee', [['bungee.woff2', 400]]],
+    ['Monaspace Krypton', '--font-krypton', [['krypton5.woff2', 500], ['krypton8.woff2', 800]]],
+    ['Blackout Midnight', '--font-blackout-midnight', [['blackout.woff2', 400]]],
+  ].map(([name, cssVariable, files]) => ({
+    provider: fontProviders.local(),
+    name,
+    cssVariable,
+    options: {
+      variants: files.map(([file, weight]) => ({
+        src: [`./src/assets/fonts/${file}`],
+        weight,
+        style: 'normal',
+      })),
+    },
+  })),
   markdown: {
     shikiConfig: {
       themes: {
